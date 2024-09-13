@@ -1,0 +1,2 @@
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x64\TSM Manager.pdb
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x64\TSM Manager.exe

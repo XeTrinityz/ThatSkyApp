@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "nCuarfKIkXo=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\xetri\\source\\repos\\TSM Manager\\TSM Manager\\TSM Manager.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\xetri\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.8\\microsoft.net.illink.tasks.8.0.8.nupkg.sha512",
+    "C:\\Users\\xetri\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\8.0.8\\microsoft.netcore.app.runtime.win-x86.8.0.8.nupkg.sha512",
+    "C:\\Users\\xetri\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\8.0.8\\microsoft.windowsdesktop.app.runtime.win-x86.8.0.8.nupkg.sha512",
+    "C:\\Users\\xetri\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\8.0.8\\microsoft.aspnetcore.app.runtime.win-x86.8.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}

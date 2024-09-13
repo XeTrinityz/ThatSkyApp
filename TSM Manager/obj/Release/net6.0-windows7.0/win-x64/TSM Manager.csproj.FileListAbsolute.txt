@@ -1,0 +1,17 @@
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net6.0-windows7.0\win-x64\TSM Manager.exe
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net6.0-windows7.0\win-x64\TSM Manager.deps.json
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net6.0-windows7.0\win-x64\TSM Manager.runtimeconfig.json
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net6.0-windows7.0\win-x64\TSM Manager.dll
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net6.0-windows7.0\win-x64\TSM Manager.pdb
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM_Manager.Form1.resources
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM_Manager.Properties.Resources.resources
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.csproj.GenerateResource.cache
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.AssemblyInfoInputs.cache
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.AssemblyInfo.cs
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.csproj.CoreCompileInputs.cache
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.dll
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\refint\TSM Manager.dll
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.pdb
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\TSM Manager.genruntimeconfig.cache
+C:\Users\xetri\source\repos\TSM Manager\TSM Manager\obj\Release\net6.0-windows7.0\win-x64\ref\TSM Manager.dll
