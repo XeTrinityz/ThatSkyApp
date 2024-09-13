@@ -17,9 +17,6 @@
 
 <!-- CONTRIBUTING -->
 ## Contributing
-
-Your contributions are what make the community an amazing place to be creative, inspire others, and make a great bot even better. If you have a suggestion that would improve Trinity Bot, please fork the repo and create a pull request. You can also open an issue with the tag "enhancement".
-
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
