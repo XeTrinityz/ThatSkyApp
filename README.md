@@ -7,10 +7,10 @@
     <img src="https://i.imgur.com/kAOyj2M.jpeg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">TSM Installer</h3>
+  <h3 align="center">That Sky App</h3>
 
   <p align="center">
-    A simple application to make installing/uninstalling and updating TSM/SML easier
+    A simple application for installing TSM & SML
     <br />
   </p>
 </div>
