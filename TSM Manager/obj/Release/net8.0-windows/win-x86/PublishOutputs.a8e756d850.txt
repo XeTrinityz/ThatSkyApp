@@ -1,7 +1,0 @@
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\TSM Manager.pdb
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\D3DCompiler_47_cor3.dll
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\PenImc_cor3.dll
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\PresentationNative_cor3.dll
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\vcruntime140_cor3.dll
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\wpfgfx_cor3.dll
-C:\Users\xetri\source\repos\TSM Manager\TSM Manager\bin\Release\net8.0-windows\publish\win-x86\TSM Manager.exe
