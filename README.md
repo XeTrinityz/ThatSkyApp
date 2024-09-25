@@ -9,14 +9,14 @@
 
   <h3 align="center">That Sky App</h3>
 
-  <!-- SOFTWARE IMAGE -->
-  <img src="https://i.ibb.co/zfNj2v3/a.png" alt="That Sky App">
-</div>
-
   <p align="center">
-    A simple application for installing TSM & SML
+    A simple application for installing TSM
     <br />
   </p>
+</div>
+
+  <!-- SOFTWARE IMAGE -->
+  <img src="https://i.ibb.co/zfNj2v3/a.png" alt="That Sky App">
 </div>
 
 <!-- CONTRIBUTING -->
