@@ -13,7 +13,6 @@
     A simple application for installing TSM
     <br />
   </p>
-</div>
 
   <!-- SOFTWARE IMAGE -->
   <img src="https://i.ibb.co/zfNj2v3/a.png" alt="That Sky App">
