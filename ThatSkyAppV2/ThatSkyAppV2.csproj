@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>TSN.ico</ApplicationIcon>
+		<Company />
+		<Product>That Sky App</Product>
+		<Authors>XeTrinityz</Authors>
+		<PackageId>ThatSkyApp</PackageId>
+		<PackageIcon>TSN.png</PackageIcon>
+		<AssemblyName>ThatSkyApp</AssemblyName>
+		<Version>$(VersionPrefix)</Version>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Content Include="TSN.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	<None Remove="Resources\Localization\LocalizationResources.xaml" />
+	<None Remove="Resources\Localization\LocalizationResources.zh.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	<Resource Include="Resources\Localization\LocalizationResources.xaml" />
+	<Resource Include="Resources\Localization\LocalizationResources.zh.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+	  <PackageReference Include="MahApps.Metro.IconPacks" Version="5.1.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	  <PackageReference Include="System.Management" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="TSN.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</Resource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="UI\Styles\" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,249 @@
+<mah:MetroWindow x:Class="ThatSkyAppV2.UI.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="{DynamicResource Str.Settings.Title}"
+        Height="212"
+		Width="500"
+		WindowStartupLocation="CenterOwner"
+		ResizeMode="NoResize"
+		WindowTitleBrush="#FF1A2026"
+		TitleCharacterCasing="Normal"
+		TitleAlignment="Center"
+		TitleBarHeight="30"
+		Background="#FF111111"
+		NonActiveBorderBrush="#FF1A2024"
+		BorderThickness="3"
+		BorderBrush="#FF1A2026"
+		NonActiveWindowTitleBrush="#FF1A2026">
+
+	<mah:MetroWindow.Resources>
+		<!-- Combobox Style -->
+		<Style x:Key="SettingsComboBoxStyle" TargetType="ComboBox">
+			<Setter Property="Background">
+				<Setter.Value>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FF111111"/>
+						<GradientStop Color="#FF1A2026" Offset="1"/>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="Height" Value="26"/>
+			<Setter Property="Padding" Value="5,3,5,3"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ComboBox">
+						<Grid>
+							<ToggleButton x:Name="ToggleButton"
+										  IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+										  Background="{TemplateBinding Background}"
+										  BorderBrush="{TemplateBinding BorderBrush}"
+										  BorderThickness="{TemplateBinding BorderThickness}">
+								<ToggleButton.Template>
+									<ControlTemplate TargetType="ToggleButton">
+										<Border x:Name="ToggleBorder"
+												Background="{TemplateBinding Background}"
+												BorderBrush="{TemplateBinding BorderBrush}"
+												BorderThickness="{TemplateBinding BorderThickness}"
+												CornerRadius="2">
+											<Grid>
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition/>
+													<ColumnDefinition Width="20"/>
+												</Grid.ColumnDefinitions>
+												<ContentPresenter Grid.Column="0"
+																  Margin="8,0,0,0"
+																  VerticalAlignment="Center"
+																  Content="{Binding Path=SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+																  ContentTemplate="{Binding Path=SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+												<Path Grid.Column="1"
+													  Fill="White"
+													  Data="M0,0 L4,4 L8,0"
+													  Width="8" Height="4"
+													  Stretch="Fill"
+													  HorizontalAlignment="Center"
+													  VerticalAlignment="Center"/>
+											</Grid>
+										</Border>
+										<ControlTemplate.Triggers>
+											<Trigger Property="IsMouseOver" Value="True">
+												<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+											</Trigger>
+											<Trigger Property="IsPressed" Value="True">
+												<Setter Property="Background">
+													<Setter.Value>
+														<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+															<GradientStop Color="#FF0A0A0A"/>
+															<GradientStop Color="#FF151B20" Offset="1"/>
+														</LinearGradientBrush>
+													</Setter.Value>
+												</Setter>
+												<Setter Property="BorderBrush" Value="#FF1B8AA7"/>
+											</Trigger>
+										</ControlTemplate.Triggers>
+									</ControlTemplate>
+								</ToggleButton.Template>
+							</ToggleButton>
+							<Popup x:Name="PART_Popup"
+								   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+								   AllowsTransparency="True"
+								   Placement="Bottom"
+								   PopupAnimation="Slide">
+								<Border x:Name="DropDownBorder"
+										Background="#FF1A2026"
+										BorderThickness="1"
+										BorderBrush="#FF20A1C3"
+										Width="433"
+										CornerRadius="2">
+									<ScrollViewer MaxHeight="200">
+										<ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+									</ScrollViewer>
+								</Border>
+							</Popup>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!-- Settings Group Style -->
+		<Style x:Key="SettingsGroupStyle" TargetType="Border">
+			<Setter Property="Background" Value="#FF1A2026"/>
+			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="CornerRadius" Value="5"/>
+			<Setter Property="Padding" Value="15"/>
+			<Setter Property="Margin" Value="0,0,0,15"/>
+		</Style>
+
+		<!-- Settings Header Style -->
+		<Style x:Key="SettingsHeaderStyle" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Margin" Value="0,0,0,15"/>
+		</Style>
+
+		<!-- Settings Label Style -->
+		<Style x:Key="SettingsLabelStyle" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="Margin" Value="0,0,15,0"/>
+		</Style>
+
+		<!-- Save Button Style -->
+		<Style x:Key="SaveButtonStyle" TargetType="Button">
+			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="15"/>
+			<Setter Property="Height" Value="40"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<iconPacks:PackIconMaterial Kind="ContentSave"
+                                                          Width="16" Height="16"
+                                                          Margin="15,0,10,0"
+                                                          VerticalAlignment="Center"/>
+								<ContentPresenter Grid.Column="1"
+                                                Margin="0,0,15,0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"/>
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Background">
+				<Setter.Value>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FF111111"/>
+						<GradientStop Color="#FF1A2026" Offset="1"/>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+			<Style.Triggers>
+				<Trigger Property="IsPressed" Value="True">
+					<Setter Property="Background">
+						<Setter.Value>
+							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+								<GradientStop Color="#FF0A0A0A"/>
+								<GradientStop Color="#FF151B20" Offset="1"/>
+							</LinearGradientBrush>
+						</Setter.Value>
+					</Setter>
+					<Setter Property="BorderBrush" Value="#FF1B8AA7"/>
+				</Trigger>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+	</mah:MetroWindow.Resources>
+
+	<Border Margin="15,15" Background="Transparent">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<!-- This is for the language group -->
+				<RowDefinition Height="Auto"/>
+				<!-- This is for the Save button -->
+			</Grid.RowDefinitions>
+
+			<!-- Language Settings -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="1" Margin="0,0,0,10">
+				<!-- Adjusted margin -->
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+
+					<!-- Group Header -->
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+						<iconPacks:PackIconMaterial Kind="Translate"
+                                                      Width="20" Height="20"
+                                                      Foreground="#FF20A1C3"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0,0,10,0"/>
+						<TextBlock Text="{DynamicResource Str.Settings.Language}"
+                                 Foreground="White"
+                                 FontSize="14"
+                                 FontWeight="SemiBold"
+                                 VerticalAlignment="Center"/>
+					</StackPanel>
+
+					<!-- Language Selection -->
+					<ComboBox x:Name="LanguageComboBox"
+                              Grid.Row="1"
+                              Style="{StaticResource SettingsComboBoxStyle}">
+						<ComboBoxItem Content="{DynamicResource Str.Language.English}"/>
+						<ComboBoxItem Content="{DynamicResource Str.Language.Chinese}"/>
+						<ComboBoxItem Content="{DynamicResource Str.Language.Russian}"/>
+					</ComboBox>
+				</Grid>
+			</Border>
+
+			<!-- Save Button -->
+			<Button Grid.Row="2"
+                    Content="{DynamicResource Str.Settings.Save}"
+                    Style="{StaticResource SaveButtonStyle}"
+                    Click="SaveButton_Click"
+                    Margin="0,5,0,10"/>
+			<!-- Matching bottom margin with the top margin -->
+		</Grid>
+	</Border>
+</mah:MetroWindow>

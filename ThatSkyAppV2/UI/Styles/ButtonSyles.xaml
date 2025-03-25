@@ -1,0 +1,125 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+
+    <!-- Base Button Style -->
+    <Style x:Key="AppButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="BorderBrush" Value="#FF20A1C3"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Height" Value="43"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                            <RotateTransform Angle="-57.2" CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="#FF111111"/>
+                    <GradientStop Color="#FF1A2026" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <LinearGradientBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                    <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                                    <RotateTransform Angle="-57.2" CenterX="0.5" CenterY="0.5"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </LinearGradientBrush.RelativeTransform>
+                            <GradientStop Color="#FF0A0A0A"/>
+                            <GradientStop Color="#FF151B20" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush" Value="#FF1B8AA7"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="#FF25B6DE"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Maintenance Menu Button Style -->
+    <Style x:Key="MaintenanceMenuButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Left" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#30FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#40FFFFFF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Circle Button Style -->
+    <Style x:Key="MahApps.Styles.Button.Circle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="999"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#30FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#40FFFFFF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

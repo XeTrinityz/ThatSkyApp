@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Window Title -->
+    <system:String x:Key="Str.Window.Title">То самое приложение Sky</system:String>
+
+    <!-- Button Labels -->
+    <system:String x:Key="Str.Button.Install">Установить</system:String>
+    <system:String x:Key="Str.Button.Update">Обновить</system:String>
+    <system:String x:Key="Str.Button.CheckForUpdates">Проверить обновления</system:String>
+    <system:String x:Key="Str.Button.Changelog">Изменения</system:String>
+    <system:String x:Key="Str.Button.TSMResources">Ресурсы TSM</system:String>
+    <system:String x:Key="Str.Button.LaunchSky">Запустить Sky</system:String>
+    <system:String x:Key="Str.Button.Maintenance">Обслуживание</system:String>
+    <system:String x:Key="Str.Button.Save">Сохранить</system:String>
+
+    <!-- Menu Items -->
+    <system:String x:Key="Str.Menu.RepairInstallation">Восстановить установку</system:String>
+    <system:String x:Key="Str.Menu.VerifyFiles">Проверить файлы игры</system:String>
+    <system:String x:Key="Str.Menu.InstallVCRedist">Установить VC Redist</system:String>
+    <system:String x:Key="Str.Menu.UninstallTSM">Удалить TSM</system:String>
+
+    <!-- Status Labels -->
+    <system:String x:Key="Str.Status.TSM">TSM:</system:String>
+    <system:String x:Key="Str.Status.SML">SML:</system:String>
+    <system:String x:Key="Str.Status.VCRedist">VC Redist:</system:String>
+    <system:String x:Key="Str.Status.Installed">Установлено</system:String>
+    <system:String x:Key="Str.Status.NotInstalled">Не установлено</system:String>
+
+    <!-- Messages -->
+    <system:String x:Key="Str.Message.UninstallConfirm">Удалить TSM? Будут удалены все файлы, кроме связанных с Sky.</system:String>
+    <system:String x:Key="Str.Message.GameFolderNotFound">Папка с игрой не найдена. Пожалуйста, выберите её вручную.</system:String>
+    <system:String x:Key="Str.Message.UpdateAvailable">Доступна новая версия приложения. Хотите установить её сейчас?</system:String>
+    <system:String x:Key="Str.Message.UpdateSuccess">TSM успешно обновлён</system:String>
+    <system:String x:Key="Str.Message.InstallSuccess">TSM успешно установлен</system:String>
+    <system:String x:Key="Str.Message.UninstallSuccess">TSM успешно удалён</system:String>
+    <system:String x:Key="Str.Message.DownloadingVCRedist">Загрузка VC Redist...</system:String>
+    <system:String x:Key="Str.Message.InstallingVCRedist">Установка VC Redist...</system:String>
+    <system:String x:Key="Str.Message.VCRedistSuccess">VC Redist успешно установлен</system:String>
+    <system:String x:Key="Str.Message.VCRedistFailed">Ошибка установки VC Redist (Ошибка: {0})</system:String>
+    <system:String x:Key="Str.Message.VCRedistCancelled">Установка VC Redist отменена пользователем</system:String>
+    <system:String x:Key="Str.Message.CheckingUpdates">Проверка обновлений...</system:String>
+    <system:String x:Key="Str.Message.DownloadFailed">Ошибка загрузки: {0}</system:String>
+    <system:String x:Key="Str.Message.UpdateFailed">Ошибка обновления: {0}</system:String>
+    <system:String x:Key="Str.Message.InstallFailed">Ошибка установки: {0}</system:String>
+    <system:String x:Key="Str.Message.UninstallFailed">Ошибка удаления: {0}</system:String>
+    <system:String x:Key="Str.Message.VerifyFirst">Хотите сначала проверить файлы игры через Steam?</system:String>
+    <system:String x:Key="Str.Message.WaitForSteam">Пожалуйста, дождитесь окончания проверки файлов в Steam, затем нажмите Да, чтобы продолжить ремонт TSM.</system:String>
+    <system:String x:Key="Str.Message.VerificationStarted">Началась проверка файлов в Steam</system:String>
+
+    <!-- Settings -->
+    <system:String x:Key="Str.Settings.Title">Настройки</system:String>
+    <system:String x:Key="Str.Settings.Language">Язык</system:String>
+    <system:String x:Key="Str.Settings.Save">Сохранить</system:String>
+    <system:String x:Key="Str.Button.Yes">Да</system:String>
+    <system:String x:Key="Str.Button.No">Нет</system:String>
+</ResourceDictionary>
