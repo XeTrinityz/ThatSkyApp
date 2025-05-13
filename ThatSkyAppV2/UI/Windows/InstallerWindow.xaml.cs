@@ -14,7 +14,7 @@ public partial class InstallerWindow : MetroWindow
 {
     private static readonly ModInstallInfo[] ModInstallations = {
         new("TSM", "TSM.zip", true),
-        new("SML", "sml-pc.zip", false)
+        new("SML", "TSML.zip", false)
     };
 
     private readonly HttpClient _httpClient;

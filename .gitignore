@@ -1,7 +1,60 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+# Build results
+bin/
+obj/
+out/
 
-/.vs
-/That Sky App/obj
-/That Sky App/bin
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code workspace settings
+.vscode/
+
+# Rider settings
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Dotnet CLI
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+*.psmdcp
+
+# Microsoft Visual Studio
+.vs/
+*.dbmdl
+*.pdb
+
+# Others
+*.log
+*.tlog
+*.cache
+*.bak
+*.tmp
+
+# File nesting settings
+.filenesting.json
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Publish outputs
+publish/

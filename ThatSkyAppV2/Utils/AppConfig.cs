@@ -10,7 +10,7 @@ public class AppConfig
         ["English"] = new()
         {
             ["TSM"] = "https://github.com/XeTrinityz/ThatSkyMod/releases/latest/download/TSM.zip",
-            ["SML"] = "https://github.com/lukas0x1/sml-pc/releases/latest/download/sml-pc.zip",
+            ["SML"] = "https://github.com/XeTrinityz/ThatSkyModLoader/releases/latest/download/TSML.zip",
             ["VCRedist"] = "https://aka.ms/vs/17/release/vc_redist.x64.exe"
         },
         ["Chinese"] = new()
@@ -22,7 +22,7 @@ public class AppConfig
         ["Russian"] = new()
         {
             ["TSM"] = "https://github.com/XeTrinityz/ThatSkyMod/releases/latest/download/TSM.zip",
-            ["SML"] = "https://github.com/lukas0x1/sml-pc/releases/latest/download/sml-pc.zip",
+            ["SML"] = "https://github.com/XeTrinityz/ThatSkyModLoader/releases/latest/download/TSML.zip",
             ["VCRedist"] = "https://aka.ms/vs/17/release/vc_redist.x64.exe"
         }
     };
