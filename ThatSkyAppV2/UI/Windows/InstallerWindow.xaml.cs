@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Diagnostics;
@@ -12,10 +12,8 @@ namespace ThatSkyAppV2.UI.Windows;
 
 public partial class InstallerWindow : MetroWindow
 {
-    private static readonly ModInstallInfo[] ModInstallations = {
-        new("TSM", "TSM.zip", true),
-        new("SML", "TSML.zip", false)
-    };
+    // Will be initialized based on the configuration
+    private ModInstallInfo[] _modInstallations;
 
     private readonly HttpClient _httpClient;
     private readonly AboutWindow _aboutWindow;
@@ -43,12 +41,18 @@ public partial class InstallerWindow : MetroWindow
         _updateService = new UpdateService(_httpClient, ShowPopup, UpdateInfoLabel);
         _autoUpdateService = new AutoUpdateService(_httpClient, content => InfoLabel.Content = content, isLoading => ToggleLoading(isLoading));
 
+        // Initialize mod installations based on current config
+        UpdateModInstallations();
+
         UpdateStatus(GetGameFolderFromRegistry(false));
         UpdateUIStrings();
         _ = CleanupAsync();
         _ = _autoUpdateService.CheckAndApplyUpdateAsync();
 
         _localizationService.LanguageChanged += UpdateUIStrings;
+        
+        // Listen for settings changes to update mod installations
+        _configService.SettingsChanged += UpdateModInstallations;
     }
 
 
@@ -56,6 +60,7 @@ public partial class InstallerWindow : MetroWindow
     {
         base.OnClosed(e);
         _localizationService.LanguageChanged -= UpdateUIStrings;
+        _configService.SettingsChanged -= UpdateModInstallations;
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
         _httpClient.Dispose();
@@ -97,6 +102,17 @@ public partial class InstallerWindow : MetroWindow
         {
             ShowPopup($"Cleanup failed: {ex.Message}");
         }
+    }
+
+    private void UpdateModInstallations()
+    {
+        var config = _configService.GetConfig();
+        string smlFilename = config.UseNewModLoader ? "TSML.zip" : "sml-pc.zip";
+        
+        _modInstallations = new ModInstallInfo[] {
+            new("TSM", "TSM.zip", true),
+            new("SML", smlFilename, false)
+        };
     }
 
     private bool IsComponentInstalled(string component)
@@ -260,7 +276,7 @@ public partial class InstallerWindow : MetroWindow
         ToggleLoading(true);
         try
         {
-            await _installationService.InstallModsAsync(gameFolder, ModInstallations);
+            await _installationService.InstallModsAsync(gameFolder, _modInstallations);
             UpdateStatus(gameFolder);
         }
         finally
@@ -403,7 +419,7 @@ public partial class InstallerWindow : MetroWindow
         {
             FileUtils.RemoveNonProtectedFiles(gameFolder);
             await _installationService.InstallVCRedistAsync(_cancellationTokenSource.Token);
-            await _installationService.InstallModsAsync(gameFolder, ModInstallations);
+            await _installationService.InstallModsAsync(gameFolder, _modInstallations);
 
             ShowPopup("Repair completed successfully");
             UpdateStatus(gameFolder);

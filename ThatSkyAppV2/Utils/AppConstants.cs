@@ -2,7 +2,7 @@
 
 public static class AppConstants
 {
-    public const string AppVersion = "1.8.6";
+    public const string AppVersion = "1.8.7";
     public const int MaxPopupMessageLength = 100;
     public const string GameFolderName = "Sky Children of the Light";
     public const string GameRegistryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 2325290";

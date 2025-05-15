@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -45,9 +45,28 @@ public class InstallationService : IDisposable
             }
 
             var config = _configService.GetConfig();
+            
             foreach (var mod in mods)
             {
-                string downloadUrl = config.GetDownloadUrl(mod.ModName);
+                string downloadUrl;
+                
+                // Force correct URL based on setting for SML
+                if (mod.ModName == "SML")
+                {
+                    if (config.UseNewModLoader)
+                    {
+                        downloadUrl = "https://github.com/XeTrinityz/ThatSkyModLoader/releases/latest/download/TSML.zip";
+                    }
+                    else
+                    {
+                        downloadUrl = "https://github.com/lukas0x1/sml-pc/releases/latest/download/sml-pc.zip";
+                    }
+                }
+                else
+                {
+                    downloadUrl = config.GetDownloadUrl(mod.ModName);
+                }
+                
                 await InstallModAsync(mod, downloadUrl, gameFolder);
             }
 

@@ -126,7 +126,7 @@
                          HorizontalAlignment="Center"
                          Margin="0,6,0,0"/>
 
-                <TextBlock Text="Version 1.8.6"
+                <TextBlock Text="Version 1.8.7"
                          FontSize="11"
                          Foreground="#B0B0B0"
                          HorizontalAlignment="Center"

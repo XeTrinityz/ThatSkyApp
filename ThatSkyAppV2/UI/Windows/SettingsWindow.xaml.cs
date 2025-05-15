@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
@@ -25,7 +25,7 @@ namespace ThatSkyAppV2.UI.Windows
             LanguageComboBox.Items.Add(chineseItem);
             LanguageComboBox.Items.Add(russianItem);
 
-            // Select current language
+            // Select current language and initialize other settings
             var config = _configService.GetConfig();
             LanguageComboBox.SelectedItem = config.Language switch
             {
@@ -33,6 +33,10 @@ namespace ThatSkyAppV2.UI.Windows
                 "Russian" => russianItem, 
                 _ => englishItem
             };
+            
+            // Set mod loader radio button state
+            TsmlRadioButton.IsChecked = config.UseNewModLoader;
+            SmlRadioButton.IsChecked = !config.UseNewModLoader;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -42,6 +46,7 @@ namespace ThatSkyAppV2.UI.Windows
             _configService.UpdateConfig(config =>
             {
                 config.Language = selectedLanguage;
+                config.UseNewModLoader = TsmlRadioButton.IsChecked ?? true;
             });
 
             SettingsChanged?.Invoke();

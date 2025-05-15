@@ -4,7 +4,7 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="{DynamicResource Str.Settings.Title}"
-        Height="212"
+        Height="370"
 		Width="500"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize"
@@ -136,6 +136,41 @@
 			<Setter Property="Margin" Value="0,0,15,0"/>
 		</Style>
 
+		<!-- Radio Button Style -->
+		<Style x:Key="ModLoaderRadioButtonStyle" TargetType="{x:Type RadioButton}">
+			<Setter Property="SnapsToDevicePixels" Value="true"/>
+			<Setter Property="OverridesDefaultStyle" Value="true"/>
+			<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RadioButton}">
+						<Border Background="{TemplateBinding Background}" BorderThickness="0">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Ellipse x:Name="RadioCircle" Width="16" Height="16" Margin="0,2,5,0" StrokeThickness="1" Stroke="#FF20A1C3" Fill="Transparent"/>
+								<Ellipse x:Name="RadioMark" Width="8" Height="8" Margin="0,2,5,0" Fill="#FF20A1C3" Visibility="Collapsed"/>
+								<ContentPresenter Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
+							</Grid>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsChecked" Value="true">
+								<Setter TargetName="RadioMark" Property="Visibility" Value="Visible"/>
+							</Trigger>
+							<Trigger Property="IsMouseOver" Value="true">
+								<Setter TargetName="RadioCircle" Property="Stroke" Value="#FF25B6DE"/>
+								<Setter TargetName="RadioMark" Property="Fill" Value="#FF25B6DE"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
 		<!-- Save Button Style -->
 		<Style x:Key="SaveButtonStyle" TargetType="Button">
 			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
@@ -198,14 +233,12 @@
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
-				<!-- This is for the language group -->
 				<RowDefinition Height="Auto"/>
-				<!-- This is for the Save button -->
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
 			<!-- Language Settings -->
-			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="1" Margin="0,0,0,10">
-				<!-- Adjusted margin -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="0" Margin="0,0,0,10">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -237,13 +270,82 @@
 				</Grid>
 			</Border>
 
+			<!-- Mod Loader Settings -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="1" Margin="0,0,0,10">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+
+					<!-- Group Header -->
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+						<iconPacks:PackIconMaterial Kind="FileReplace"
+                                                      Width="20" Height="20"
+                                                      Foreground="#FF20A1C3"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0,0,10,0"/>
+						<TextBlock Text="Mod Loader"
+                                 Foreground="White"
+                                 FontSize="14"
+                                 FontWeight="SemiBold"
+                                 VerticalAlignment="Center"/>
+					</StackPanel>
+
+					<!-- Mod Loader Selection -->
+					<Grid Grid.Row="1" Margin="0,5,0,5">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<!-- TSML Option -->
+					<RadioButton x:Name="TsmlRadioButton" 
+							   Grid.Row="0" Grid.Column="0"
+							   Content="TSML (Recommended)" 
+							   Style="{StaticResource ModLoaderRadioButtonStyle}"
+							   FontWeight="SemiBold"
+							   IsChecked="True"
+							   GroupName="ModLoader"
+							   Margin="0,5,0,5"/>
+
+						<!-- SML Option -->
+					<RadioButton x:Name="SmlRadioButton" 
+							   Grid.Row="0" Grid.Column="1"
+							   Content="Legacy SML" 
+							   Style="{StaticResource ModLoaderRadioButtonStyle}" 
+							   GroupName="ModLoader"
+							   Margin="0,5,0,5"/>
+
+						<!-- TSML Description -->
+						<TextBlock Grid.Row="1" Grid.Column="0"
+								   TextWrapping="Wrap"
+								   Foreground="#CCCCCC"
+								   FontSize="11"
+								   Margin="20,0,5,0"
+								   Text="Better security with anti-detection countermeasures, but may have occasional compatibility issues"/>
+
+						<!-- SML Description -->
+						<TextBlock Grid.Row="1" Grid.Column="1"
+								   TextWrapping="Wrap"
+								   Foreground="#CCCCCC"
+								   FontSize="11"
+								   Margin="20,0,5,0"
+								   Text="Original loader with better compatibility across systems, but fewer security features"/>
+					</Grid>
+				</Grid>
+			</Border>
+
 			<!-- Save Button -->
 			<Button Grid.Row="2"
                     Content="{DynamicResource Str.Settings.Save}"
                     Style="{StaticResource SaveButtonStyle}"
                     Click="SaveButton_Click"
                     Margin="0,5,0,10"/>
-			<!-- Matching bottom margin with the top margin -->
 		</Grid>
 	</Border>
 </mah:MetroWindow>

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using ThatSkyAppV2.Constants;
 using ThatSkyAppV2.Models;
@@ -10,6 +10,8 @@ public class ConfigurationService
 {
     private readonly string _configPath;
     private AppConfig _currentConfig;
+    
+    public event Action? SettingsChanged;
 
     public ConfigurationService()
     {
@@ -26,6 +28,7 @@ public class ConfigurationService
     {
         updateAction(_currentConfig);
         SaveConfiguration();
+        SettingsChanged?.Invoke();
     }
 
     private AppConfig LoadConfiguration()
