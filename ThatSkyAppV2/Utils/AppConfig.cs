@@ -4,6 +4,7 @@ public class AppConfig
 {
     public string Language { get; set; } = "English";
     public bool UseNewModLoader { get; set; } = true;
+    public string? CustomGamePath { get; set; }
 
     // Hard-coded download URLs - can be accessed via GetDownloadUrl method
     private static readonly Dictionary<string, Dictionary<string, string>> DownloadUrls = new()

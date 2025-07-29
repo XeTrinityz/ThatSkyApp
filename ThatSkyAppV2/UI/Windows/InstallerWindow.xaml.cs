@@ -35,7 +35,7 @@ public partial class InstallerWindow : MetroWindow
         _configService = new ConfigurationService();
         _localizationService = new LocalizationService(_configService);
 
-        _gameLocationService = new GameLocationService();
+        _gameLocationService = new GameLocationService(_configService);
         _installationService = new InstallationService(_httpClient, _configService, _localizationService, ShowPopup, UpdateInfoLabel);
 
         _updateService = new UpdateService(_httpClient, ShowPopup, UpdateInfoLabel);
@@ -271,12 +271,20 @@ public partial class InstallerWindow : MetroWindow
     private async void InstallButton_Click(object sender, RoutedEventArgs e)
     {
         string? gameFolder = GetGameFolderFromRegistry(true);
-        if (string.IsNullOrEmpty(gameFolder)) return;
+        Debug.WriteLine($"[InstallButton_Click] Selected game folder: {gameFolder ?? "(null)"}");
+        
+        if (string.IsNullOrEmpty(gameFolder)) 
+        {
+            Debug.WriteLine("[InstallButton_Click] No game folder selected, aborting installation");
+            return;
+        }
 
         ToggleLoading(true);
         try
         {
+            Debug.WriteLine($"[InstallButton_Click] Starting installation to: {gameFolder}");
             await _installationService.InstallModsAsync(gameFolder, _modInstallations);
+            Debug.WriteLine("[InstallButton_Click] Installation completed successfully");
             UpdateStatus(gameFolder);
         }
         finally

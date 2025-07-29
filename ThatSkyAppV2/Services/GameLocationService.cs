@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -9,15 +9,43 @@ namespace ThatSkyAppV2.Services;
 public class GameLocationService
 {
     private const string GameRegistryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 2325290";
+    private readonly ConfigurationService _configService;
+
+    public GameLocationService(ConfigurationService configService)
+    {
+        _configService = configService;
+    }
 
     public string? GetGameFolderFromRegistry(bool openFolderDialog)
     {
-        // First try to get from registry
-        string? registryGamePath = GetFromRegistry();
+        Debug.WriteLine($"[GameLocationService] Getting game folder (openDialog: {openFolderDialog})");
+        
+        // First check custom path from config
+        var config = _configService.GetConfig();
+        Debug.WriteLine($"[GameLocationService] Custom game path in config: {config.CustomGamePath ?? "(null)"}");
+        
+        if (!string.IsNullOrEmpty(config.CustomGamePath) && IsCorrectGameFolder(config.CustomGamePath, isCustomPath: true))
+        {
+            Debug.WriteLine("[GameLocationService] Using custom game path from config");
+            return config.CustomGamePath;
+        }
+        else if (!string.IsNullOrEmpty(config.CustomGamePath))
+        {
+            Debug.WriteLine($"[GameLocationService] Custom game path is set but not valid: {config.CustomGamePath}");
+        }
 
+        // Then try to get from registry
+        string? registryGamePath = GetFromRegistry();
+        Debug.WriteLine($"[GameLocationService] Registry game path: {registryGamePath ?? "(null)"}");
+        
         if (!string.IsNullOrEmpty(registryGamePath) && IsCorrectGameFolder(registryGamePath))
         {
+            Debug.WriteLine("[GameLocationService] Using game path from registry");
             return registryGamePath;
+        }
+        else if (!string.IsNullOrEmpty(registryGamePath))
+        {
+            Debug.WriteLine("[GameLocationService] Registry path is not valid");
         }
 
         // If not found in registry and dialog requested, try manual selection
@@ -78,10 +106,19 @@ public class GameLocationService
         return ScanForGameFolder(selectedPath);
     }
 
-    private bool IsCorrectGameFolder(string path) =>
-        !string.IsNullOrEmpty(path) &&
-        Path.GetFileName(path).Equals(AppConstants.GameFolderName, StringComparison.OrdinalIgnoreCase) &&
-        File.Exists(Path.Combine(path, "Sky.exe"));
+    private bool IsCorrectGameFolder(string path, bool isCustomPath = false)
+    {
+        if (string.IsNullOrEmpty(path))
+            return false;
+            
+        // If it's a custom path, only check if the path exists
+        if (isCustomPath)
+            return Directory.Exists(path);
+            
+        // For non-custom paths, check folder name and Sky.exe existence
+        return Path.GetFileName(path).Equals(AppConstants.GameFolderName, StringComparison.OrdinalIgnoreCase) &&
+               File.Exists(Path.Combine(path, "Sky.exe"));
+    }
 
     private string? ScanForGameFolder(string directory)
     {

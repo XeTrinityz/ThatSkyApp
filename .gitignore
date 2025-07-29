@@ -58,3 +58,7 @@ TestResults/
 
 # Publish outputs
 publish/
+/ThatSkyAppV2/Properties/PublishProfiles/FolderProfile.pubxml.user
+/Backup
+/ThatSkyAppV2/ThatSkyAppV2.csproj.user
+/ThatSkyAppV2/ThatSkyAppV2.csproj.user

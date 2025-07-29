@@ -4,8 +4,9 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="{DynamicResource Str.Settings.Title}"
-        Height="370"
-		Width="500"
+        Height="500"
+        Width="550"
+        SizeToContent="Height"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize"
 		WindowTitleBrush="#FF1A2026"
@@ -19,6 +20,31 @@
 		NonActiveWindowTitleBrush="#FF1A2026">
 
 	<mah:MetroWindow.Resources>
+		<!-- TextBox Style -->
+		<Style x:Key="SettingsTextBoxStyle" TargetType="TextBox">
+			<Setter Property="Background">
+				<Setter.Value>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FF111111"/>
+						<GradientStop Color="#FF1A2026" Offset="1"/>
+					</LinearGradientBrush>
+				</Setter.Value>
+		</Setter>
+		<Setter Property="Foreground" Value="White"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+		<Setter Property="Padding" Value="8,5"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+			</Trigger>
+			<Trigger Property="IsFocused" Value="True">
+				<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
 		<!-- Combobox Style -->
 		<Style x:Key="SettingsComboBoxStyle" TargetType="ComboBox">
 			<Setter Property="Background">
@@ -228,9 +254,10 @@
 		</Style>
 	</mah:MetroWindow.Resources>
 
-	<Border Margin="15,15" Background="Transparent">
+	<Border Margin="15,10" Background="Transparent">
 		<Grid>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
@@ -340,8 +367,57 @@
 				</Grid>
 			</Border>
 
+			<!-- Game Path Settings -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="2" Margin="0,0,0,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Group Header -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+                        <iconPacks:PackIconMaterial Kind="FolderCog"
+                                              Width="20" Height="20"
+                                              Foreground="#FF20A1C3"
+                                              VerticalAlignment="Center"
+                                              Margin="0,0,10,0"/>
+                        <TextBlock Text="Game Installation"
+                             Foreground="White"
+                             FontSize="14"
+                             FontWeight="SemiBold"
+                             VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Game Path Display -->
+                    <Border Grid.Row="1" 
+                            Background="#1A2026" 
+                            BorderBrush="#FF20A1C3" 
+                            BorderThickness="1" 
+                            CornerRadius="2"
+                            Padding="8,6"
+                            Margin="0,0,0,10">
+                        <TextBlock x:Name="GamePathTextBlock"
+                                 Text="{Binding GamePath, FallbackValue='No game path set'}"
+                                 TextWrapping="Wrap"
+                                 Foreground="White"
+                                 FontSize="12"/>
+                    </Border>
+
+                    <!-- Change Location Button -->
+                    <Button x:Name="BrowseGamePathButton"
+                            Grid.Row="2"
+                            Content="Browse"
+                            Click="BrowseGamePathButton_Click"
+                            Style="{StaticResource SaveButtonStyle}"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,0,0,5"/>
+                </Grid>
+            </Border>
+
 			<!-- Save Button -->
-			<Button Grid.Row="2"
+			<Button Grid.Row="3"
                     Content="{DynamicResource Str.Settings.Save}"
                     Style="{StaticResource SaveButtonStyle}"
                     Click="SaveButton_Click"
