@@ -29,21 +29,21 @@
 						<GradientStop Color="#FF1A2026" Offset="1"/>
 					</LinearGradientBrush>
 				</Setter.Value>
-		</Setter>
-		<Setter Property="Foreground" Value="White"/>
-		<Setter Property="BorderThickness" Value="1"/>
-		<Setter Property="BorderBrush" Value="#FF20A1C3"/>
-		<Setter Property="Padding" Value="8,5"/>
-		<Setter Property="VerticalContentAlignment" Value="Center"/>
-		<Style.Triggers>
-			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="BorderBrush" Value="#FF25B6DE"/>
-			</Trigger>
-			<Trigger Property="IsFocused" Value="True">
-				<Setter Property="BorderBrush" Value="#FF25B6DE"/>
-			</Trigger>
-		</Style.Triggers>
-	</Style>
+			</Setter>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+			<Setter Property="Padding" Value="8,5"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Style.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+				</Trigger>
+				<Trigger Property="IsFocused" Value="True">
+					<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
 
 		<!-- Combobox Style -->
 		<Style x:Key="SettingsComboBoxStyle" TargetType="ComboBox">
@@ -255,14 +255,15 @@
 	</mah:MetroWindow.Resources>
 
 	<Border Margin="15,10" Background="Transparent">
-		<Grid>
-			<Grid.RowDefinitions>
+  		<Grid>
+  			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+  			</Grid.RowDefinitions>
 
 			<!-- Language Settings -->
 			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="0" Margin="0,0,0,10">
@@ -297,80 +298,11 @@
 				</Grid>
 			</Border>
 
-			<!-- Mod Loader Settings -->
+			<!-- Mod Install Location Settings -->
 			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="1" Margin="0,0,0,10">
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-
-					<!-- Group Header -->
-					<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-						<iconPacks:PackIconMaterial Kind="FileReplace"
-                                                      Width="20" Height="20"
-                                                      Foreground="#FF20A1C3"
-                                                      VerticalAlignment="Center"
-                                                      Margin="0,0,10,0"/>
-						<TextBlock Text="Mod Loader"
-                                 Foreground="White"
-                                 FontSize="14"
-                                 FontWeight="SemiBold"
-                                 VerticalAlignment="Center"/>
-					</StackPanel>
-
-					<!-- Mod Loader Selection -->
-					<Grid Grid.Row="1" Margin="0,5,0,5">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-						</Grid.ColumnDefinitions>
-
-						<!-- TSML Option -->
-					<RadioButton x:Name="TsmlRadioButton" 
-							   Grid.Row="0" Grid.Column="0"
-							   Content="TSML (Recommended)" 
-							   Style="{StaticResource ModLoaderRadioButtonStyle}"
-							   FontWeight="SemiBold"
-							   IsChecked="True"
-							   GroupName="ModLoader"
-							   Margin="0,5,0,5"/>
-
-						<!-- SML Option -->
-					<RadioButton x:Name="SmlRadioButton" 
-							   Grid.Row="0" Grid.Column="1"
-							   Content="Legacy SML" 
-							   Style="{StaticResource ModLoaderRadioButtonStyle}" 
-							   GroupName="ModLoader"
-							   Margin="0,5,0,5"/>
-
-						<!-- TSML Description -->
-						<TextBlock Grid.Row="1" Grid.Column="0"
-								   TextWrapping="Wrap"
-								   Foreground="#CCCCCC"
-								   FontSize="11"
-								   Margin="20,0,5,0"
-								   Text="Better security with anti-detection countermeasures, but may have occasional compatibility issues"/>
-
-						<!-- SML Description -->
-						<TextBlock Grid.Row="1" Grid.Column="1"
-								   TextWrapping="Wrap"
-								   Foreground="#CCCCCC"
-								   FontSize="11"
-								   Margin="20,0,5,0"
-								   Text="Original loader with better compatibility across systems, but fewer security features"/>
-					</Grid>
-				</Grid>
-			</Border>
-
-			<!-- Game Path Settings -->
-			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="2" Margin="0,0,0,10">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -383,14 +315,14 @@
                                               Foreground="#FF20A1C3"
                                               VerticalAlignment="Center"
                                               Margin="0,0,10,0"/>
-                        <TextBlock Text="Game Installation"
+                        <TextBlock Text="{DynamicResource Str.Settings.ModInstall.Header}"
                              Foreground="White"
                              FontSize="14"
                              FontWeight="SemiBold"
                              VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <!-- Game Path Display -->
+                    <!-- Mod Path Display -->
                     <Border Grid.Row="1" 
                             Background="#1A2026" 
                             BorderBrush="#FF20A1C3" 
@@ -399,7 +331,7 @@
                             Padding="8,6"
                             Margin="0,0,0,10">
                         <TextBlock x:Name="GamePathTextBlock"
-                                 Text="{Binding GamePath, FallbackValue='No game path set'}"
+                                 Text="{DynamicResource Str.Settings.ModInstall.NoPath}"
                                  TextWrapping="Wrap"
                                  Foreground="White"
                                  FontSize="12"/>
@@ -408,13 +340,62 @@
                     <!-- Change Location Button -->
                     <Button x:Name="BrowseGamePathButton"
                             Grid.Row="2"
-                            Content="Browse"
+                            Content="{DynamicResource Str.Settings.ModInstall.Browse}"
                             Click="BrowseGamePathButton_Click"
                             Style="{StaticResource SaveButtonStyle}"
                             HorizontalAlignment="Stretch"
                             Margin="0,0,0,5"/>
                 </Grid>
             </Border>
+
+			<!-- Miscellaneous Settings -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="2" Margin="0,0,0,10">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+
+					<!-- Group Header -->
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+						<iconPacks:PackIconMaterial Kind="Tune"
+										  Width="20" Height="20"
+										  Foreground="#FF20A1C3"
+										  VerticalAlignment="Center"
+										  Margin="0,0,10,0"/>
+						<TextBlock Text="{DynamicResource Str.Settings.Misc.Header}"
+ 								   Foreground="White"
+ 								   FontSize="14"
+ 								   FontWeight="SemiBold"
+ 								   VerticalAlignment="Center"/>
+					</StackPanel>
+
+					<!-- Download latest on inject toggle -->
+ 					<CheckBox x:Name="DownloadLatestCheckBox"
+ 							  Grid.Row="1"
+							  Content="{DynamicResource Str.Settings.Misc.DownloadLatest}"
+ 							  Foreground="White"
+ 							  VerticalAlignment="Center"/>
+
+					<!-- Inject Delay (ms) -->
+					<Grid Grid.Row="2" Margin="0,10,0,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0"
+								   Text="{DynamicResource Str.Settings.Misc.InjectDelayMs}"
+								   Style="{StaticResource SettingsLabelStyle}"/>
+						<TextBox x:Name="InjectDelayTextBox"
+								 Grid.Column="1"
+								 Style="{StaticResource SettingsTextBoxStyle}"
+								 HorizontalAlignment="Stretch"
+								 MaxLength="7"
+								 Text="0"/>
+					</Grid>
+				</Grid>
+			</Border>
 
 			<!-- Save Button -->
 			<Button Grid.Row="3"

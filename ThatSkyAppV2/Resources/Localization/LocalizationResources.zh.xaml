@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
@@ -6,6 +6,7 @@
     <system:String x:Key="Str.Window.Title">That Sky App</system:String>
 
     <!-- Button Labels -->
+    <system:String x:Key="Str.Button.Inject">注入</system:String>
     <system:String x:Key="Str.Button.Install">安装</system:String>
     <system:String x:Key="Str.Button.Update">更新</system:String>
     <system:String x:Key="Str.Button.CheckForUpdates">检查更新</system:String>
@@ -48,11 +49,67 @@
     <system:String x:Key="Str.Message.VerifyFirst">是否要先通过Steam验证游戏文件？</system:String>
     <system:String x:Key="Str.Message.WaitForSteam">请等待Steam完成文件验证，然后点击"是"继续TSM修复。</system:String>
     <system:String x:Key="Str.Message.VerificationStarted">Steam文件验证已开始</system:String>
+    <system:String x:Key="Str.Message.CleanupFailed">清理失败: {0}</system:String>
+    <system:String x:Key="Str.Message.CloseGameBeforeInject">请先关闭游戏 (Sky) 后再进行注入，然后重试。</system:String>
+    <system:String x:Key="Str.Message.InjectionFailed">注入失败: {0}</system:String>
+    <system:String x:Key="Str.Message.PleaseSetModLocation">请先在设置中指定 Mod 安装位置。</system:String>
 
     <!-- Settings -->
     <system:String x:Key="Str.Settings.Title">设置</system:String>
     <system:String x:Key="Str.Settings.Language">语言</system:String>
     <system:String x:Key="Str.Settings.Save">保存</system:String>
+    <!-- Settings: Mod Install -->
+    <system:String x:Key="Str.Settings.ModInstall.Header">Mod 安装位置</system:String>
+    <system:String x:Key="Str.Settings.ModInstall.Browse">浏览</system:String>
+    <system:String x:Key="Str.Settings.ModInstall.NoPath">未设置 Mod 路径</system:String>
+    <!-- Settings: Misc -->
+    <system:String x:Key="Str.Settings.Misc.Header">其他</system:String>
+    <system:String x:Key="Str.Settings.Misc.DownloadLatest">注入时下载最新版本（推荐）</system:String>
+    <system:String x:Key="Str.Settings.Misc.InjectDelayMs">注入延迟（毫秒）</system:String>
     <system:String x:Key="Str.Button.Yes">是</system:String>
     <system:String x:Key="Str.Button.No">否</system:String>
+
+    <!-- Dialogs / Errors -->
+    <system:String x:Key="Str.Dialog.SelectBaseFolder">选择 Mod 安装的基础文件夹</system:String>
+    <system:String x:Key="Str.Dialog.SelectSkyInstallFolder">选择模组安装的基础文件夹</system:String>
+    <system:String x:Key="Str.Error.FailedSetModPath">设置 Mod 路径失败: {0}</system:String>
+    <system:String x:Key="Str.Error.StartVerificationFailed">启动验证失败: {0}</system:String>
+    <system:String x:Key="Str.Error.OpenUrlFailed">打开链接失败: {0}</system:String>
+    <system:String x:Key="Str.Error.ModPathNotSet">未设置模组安装路径。请在设置中进行配置。</system:String>
+    <system:String x:Key="Str.Error.GameDidNotStart">Sky.exe 未在预期时间内启动。</system:String>
+    <system:String x:Key="Str.Error.TSMNotFound">解压后未找到 TSM.dll</system:String>
+    <system:String x:Key="Str.Error.InjectionFailed">注入失败。</system:String>
+    <system:String x:Key="Str.Error.DownloadTSMFailed">下载 TSM.zip 失败</system:String>
+    <system:String x:Key="Str.Error.DownloadVCRedistFailed">下载 VC Redist 失败</system:String>
+    <system:String x:Key="Str.Error.CannotDetermineExePath">无法确定当前可执行文件路径</system:String>
+
+    <!-- Language Names -->
+    <system:String x:Key="Str.Language.English">英语</system:String>
+    <system:String x:Key="Str.Language.Chinese">中文</system:String>
+    <system:String x:Key="Str.Language.Russian">俄语</system:String>
+
+    <!-- Status (InstallationService) -->
+    <system:String x:Key="Str.Status.DownloadingTSM">正在下载 TSM.zip...</system:String>
+    <system:String x:Key="Str.Status.DownloadingTSMProgress">正在下载 TSM.zip: {0:F1}% ({1:F1} MB/s)</system:String>
+    <system:String x:Key="Str.Status.ExtractingTSM">正在解压 TSM.zip...</system:String>
+    <system:String x:Key="Str.Status.UsingLocalTSM">正在使用本地 TSM 文件...</system:String>
+    <system:String x:Key="Str.Status.LaunchingGame">正在启动游戏...</system:String>
+    <system:String x:Key="Str.Status.WaitingForGame">正在等待游戏进程...</system:String>
+    <system:String x:Key="Str.Status.InjectingTSM">正在注入 TSM.dll...</system:String>
+    <system:String x:Key="Str.Status.WaitingBeforeInjection">在注入前等待 {0} 毫秒...</system:String>
+    <system:String x:Key="Str.Status.DownloadingVCRedistProgress">正在下载 VC Redist: {0:F1}% ({1:F1} MB/s)</system:String>
+
+    <!-- Update messages -->
+    <system:String x:Key="Str.Update.MessageWithUpdate">That Sky Mod V{0} | That Sky App: 有可用更新 (V{1})</system:String>
+    <system:String x:Key="Str.Update.MessageNoUpdate">That Sky Mod V{0} | That Sky App V{1}</system:String>
+
+    <!-- Common -->
+    <system:String x:Key="Str.Common.ErrorTitle">错误</system:String>
+
+    <!-- About Window -->
+    <system:String x:Key="Str.About.AppName">That Sky App</system:String>
+    <system:String x:Key="Str.About.Version">版本 {0}</system:String>
+    <system:String x:Key="Str.About.CreatedBy">由 XeTrinityz 开发</system:String>
+    <system:String x:Key="Str.About.Discord">Discord 社区</system:String>
+    <system:String x:Key="Str.About.ViewOnGitHub">在 GitHub 查看</system:String>
 </ResourceDictionary>

@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using ThatSkyAppV2.Constants;
 using ThatSkyAppV2.Models;
@@ -38,8 +38,8 @@ public class ConfigurationService
             if (File.Exists(_configPath))
             {
                 string jsonContent = File.ReadAllText(_configPath);
-                var config = JsonSerializer.Deserialize<AppConfig>(jsonContent);
-                return config ?? new AppConfig();
+                var config = JsonSerializer.Deserialize<AppConfig>(jsonContent) ?? new AppConfig();
+                return config;
             }
         }
         catch (Exception)

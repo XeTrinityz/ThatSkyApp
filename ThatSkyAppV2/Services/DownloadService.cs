@@ -123,52 +123,6 @@ public class DownloadService : IDisposable
         return true;
     }
 
-    public async Task<bool> DownloadFilesAsync(
-        string[] urls,
-        string[] destinations,
-        IProgress<DownloadProgress>? progress = null,
-        CancellationToken cancellationToken = default)
-    {
-        if (urls.Length != destinations.Length)
-            throw new ArgumentException("URLs and destinations arrays must have the same length");
-
-        var tasks = new List<Task<bool>>();
-        var semaphore = new SemaphoreSlim(MaxParallelDownloads);
-
-        for (int i = 0; i < urls.Length; i++)
-        {
-            var url = urls[i];
-            var destination = destinations[i];
-
-            await semaphore.WaitAsync(cancellationToken);
-            tasks.Add(Task.Run(async () =>
-            {
-                try
-                {
-                    return await DownloadFileAsync(url, destination, progress, cancellationToken);
-                }
-                finally
-                {
-                    semaphore.Release();
-                }
-            }, cancellationToken));
-        }
-
-        var results = await Task.WhenAll(tasks);
-        return results.All(success => success);
-    }
-
-    public void CancelDownload(string url)
-    {
-        _activeDownloads.TryRemove(url, out _);
-    }
-
-    public DownloadProgress? GetDownloadProgress(string url)
-    {
-        _activeDownloads.TryGetValue(url, out var progress);
-        return progress;
-    }
-
     public void Dispose()
     {
         _activeDownloads.Clear();

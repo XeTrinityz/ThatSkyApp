@@ -3,25 +3,28 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ThatSkyAppV2.Constants;
 using ThatSkyAppV2.Utils;
+using ThatSkyAppV2.Services;
 
 public class UpdateService
 {
     private readonly HttpClient _httpClient;
     private readonly Action<string> _showPopup;
     private readonly Action<string> _updateInfoLabel;
+    private readonly LocalizationService _localizationService;
 
-    public UpdateService(HttpClient httpClient, Action<string> showPopup, Action<string> updateInfoLabel)
+    public UpdateService(HttpClient httpClient, Action<string> showPopup, Action<string> updateInfoLabel, LocalizationService localizationService)
     {
         _httpClient = httpClient;
         _showPopup = showPopup;
         _updateInfoLabel = updateInfoLabel;
+        _localizationService = localizationService;
     }
 
     public async Task<(bool hasUpdate, string updateMessage)> CheckForUpdatesAsync(CancellationToken cancellationToken)
     {
         try
         {
-            _updateInfoLabel("Checking for updates...");
+            _updateInfoLabel(_localizationService.GetString("Str.Message.CheckingUpdates"));
 
             // Get app version from GitHub releases page
             var appResponse = await _httpClient.GetAsync(
@@ -44,8 +47,8 @@ public class UpdateService
             bool hasUpdate = VersionUtils.IsNewerVersion(latestVersion, AppConstants.AppVersion);
 
             string updateMessage = hasUpdate
-                ? $"That Sky Mod V{modVersion} | That Sky App: Update Available (V{latestVersion})"
-                : $"That Sky Mod V{modVersion} | That Sky App V{AppConstants.AppVersion}";
+                ? string.Format(_localizationService.GetString("Str.Update.MessageWithUpdate"), modVersion, latestVersion)
+                : string.Format(_localizationService.GetString("Str.Update.MessageNoUpdate"), modVersion, AppConstants.AppVersion);
 
             Debug.WriteLine($"Has update: {hasUpdate}");
             Debug.WriteLine($"Update message: {updateMessage}");
@@ -54,7 +57,7 @@ public class UpdateService
         }
         catch (Exception ex)
         {
-            _showPopup($"Update check failed: {ex.Message}");
+            _showPopup(string.Format(_localizationService.GetString("Str.Message.UpdateFailed"), ex.Message));
             throw;
         }
     }
@@ -93,7 +96,7 @@ public class UpdateService
             if (!await DownloadFileAsync(updateUrl, tempPath)) return;
 
             string currentPath = Process.GetCurrentProcess().MainModule?.FileName
-                ?? throw new InvalidOperationException("Cannot determine current executable path");
+                ?? throw new InvalidOperationException(_localizationService.GetString("Str.Error.CannotDetermineExePath"));
 
             string backupPath = currentPath + ".bak";
             File.Delete(backupPath);
@@ -105,7 +108,7 @@ public class UpdateService
         }
         catch (Exception ex)
         {
-            _showPopup($"Update failed: {ex.Message}");
+            _showPopup(string.Format(_localizationService.GetString("Str.Message.UpdateFailed"), ex.Message));
             throw;
         }
     }
@@ -122,7 +125,7 @@ public class UpdateService
         }
         catch (Exception ex)
         {
-            _showPopup($"Download failed: {ex.Message}");
+            _showPopup(string.Format(_localizationService.GetString("Str.Message.DownloadFailed"), ex.Message));
             return false;
         }
     }

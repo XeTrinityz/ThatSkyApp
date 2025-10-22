@@ -7,6 +7,9 @@ using System.ComponentModel;
 using ThatSkyAppV2.Utils;
 using ThatSkyAppV2.Models;
 using static ThatSkyAppV2.Services.DownloadService;
+using System.Diagnostics;
+using System.Linq;
+using System.IO.Compression;
 
 namespace ThatSkyAppV2.Services;
 
@@ -34,111 +37,167 @@ public class InstallationService : IDisposable
         _downloadService = new DownloadService(httpClient);
     }
 
-    public async Task InstallModsAsync(string gameFolder, ModInstallInfo[] mods)
+    private async Task<Process?> WaitForProcessAsync(string processName, TimeSpan timeout, System.Threading.CancellationToken ct)
     {
-        try
+        DateTime end = DateTime.UtcNow + timeout;
+        while (DateTime.UtcNow < end)
         {
-            bool isUpdate = File.Exists(Path.Combine(gameFolder, "mods", "TSM.dll"));
-            if (isUpdate)
+            ct.ThrowIfCancellationRequested();
+            var proc = Process.GetProcessesByName(processName).FirstOrDefault();
+            if (proc != null)
             {
-                RemoveExistingModFiles(gameFolder);
-            }
-
-            var config = _configService.GetConfig();
-            
-            foreach (var mod in mods)
-            {
-                string downloadUrl;
-                
-                // Force correct URL based on setting for SML
-                if (mod.ModName == "SML")
+                try
                 {
-                    if (config.UseNewModLoader)
-                    {
-                        downloadUrl = "https://github.com/XeTrinityz/ThatSkyModLoader/releases/latest/download/TSML.zip";
-                    }
-                    else
-                    {
-                        downloadUrl = "https://github.com/lukas0x1/sml-pc/releases/latest/download/sml-pc.zip";
-                    }
+                    if (!proc.HasExited)
+                        return proc;
                 }
-                else
-                {
-                    downloadUrl = config.GetDownloadUrl(mod.ModName);
-                }
-                
-                await InstallModAsync(mod, downloadUrl, gameFolder);
+                catch { }
             }
-
-            string message = _localizationService.GetString(
-                isUpdate ? "Str.Message.UpdateSuccess" : "Str.Message.InstallSuccess");
-            _showPopup(message);
+            await Task.Delay(1000, ct);
         }
-        catch (Exception ex)
-        {
-            string errorMessage = string.Format(
-                _localizationService.GetString(
-                    File.Exists(Path.Combine(gameFolder, "mods", "TSM.dll"))
-                        ? "Str.Message.UpdateFailed"
-                        : "Str.Message.InstallFailed"
-                ),
-                ex.Message
-            );
-            _showPopup(errorMessage);
-            throw;
-        }
+        return null;
     }
 
-    private async Task InstallModAsync(ModInstallInfo mod, string downloadUrl, string gameFolder)
+    // P/Invoke and injection helpers
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out IntPtr lpNumberOfBytesWritten);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out IntPtr lpThreadId);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
+    private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+    [System.Runtime.InteropServices.DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr hObject);
+
+    private bool InjectDll(int processId, string dllPath)
     {
-        string tempFile = Path.Combine(Path.GetTempPath(), mod.FileName);
+        const uint PROCESS_CREATE_THREAD = 0x0002;
+        const uint PROCESS_QUERY_INFORMATION = 0x0400;
+        const uint PROCESS_VM_OPERATION = 0x0008;
+        const uint PROCESS_VM_WRITE = 0x0020;
+        const uint PROCESS_VM_READ = 0x0010;
+        const uint MEM_COMMIT = 0x1000;
+        const uint MEM_RESERVE = 0x2000;
+        const uint PAGE_READWRITE = 0x04;
+
+        IntPtr hProcess = IntPtr.Zero;
         try
         {
-            _updateInfoLabel($"Downloading {mod.FileName}...");
+            hProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, processId);
+            if (hProcess == IntPtr.Zero) return false;
 
-            var progress = new Progress<DownloadProgress>(p =>
-            {
-                var speed = p.SpeedBytesPerSecond / 1024 / 1024; // Convert to MB/s
-                _updateInfoLabel($"Downloading {mod.FileName}: {p.ProgressPercentage:F1}% ({speed:F1} MB/s)");
-            });
+            byte[] dllBytes = System.Text.Encoding.ASCII.GetBytes(dllPath + "\0");
+            IntPtr allocMem = VirtualAllocEx(hProcess, IntPtr.Zero, (uint)dllBytes.Length, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+            if (allocMem == IntPtr.Zero) return false;
 
-            if (!await _downloadService.DownloadFileAsync(downloadUrl, tempFile, progress))
-            {
-                throw new Exception($"Failed to download {mod.FileName}");
-            }
+            if (!WriteProcessMemory(hProcess, allocMem, dllBytes, (uint)dllBytes.Length, out _)) return false;
 
-            string extractPath = mod.ExtractToMods ? Path.Combine(gameFolder, "mods") : gameFolder;
-            Directory.CreateDirectory(extractPath);
+            IntPtr hKernel32 = GetModuleHandle("kernel32.dll");
+            if (hKernel32 == IntPtr.Zero) return false;
+            IntPtr loadLibraryAddr = GetProcAddress(hKernel32, "LoadLibraryA");
+            if (loadLibraryAddr == IntPtr.Zero) return false;
 
-            if (mod.ExtractToMods)
-            {
-                string existingMod = Path.Combine(extractPath, "TSM.dll");
-                if (File.Exists(existingMod)) File.Delete(existingMod);
-            }
-
-            _updateInfoLabel($"Extracting {mod.FileName}...");
-            ZipFile.ExtractToDirectory(tempFile, extractPath, true);
-
-            if (mod.ExtractToMods)
-            {
-                //_updateInfoLabel("Patching TSM.dll...");
-                string dllPath = Path.Combine(extractPath, "TSM.dll");
-                //if (!SecurityUtils.PatchDllHash(dllPath))
-                //{
-                //    throw new Exception("Failed to patch TSM.dll");
-                //}
-            }
-
-            if (!mod.ExtractToMods)
-            {
-                FileUtils.CleanupExtractionFiles(gameFolder);
-            }
+            IntPtr threadId;
+            IntPtr hThread = CreateRemoteThread(hProcess, IntPtr.Zero, 0, loadLibraryAddr, allocMem, 0, out threadId);
+            if (hThread == IntPtr.Zero) return false;
+            CloseHandle(hThread);
+            return true;
         }
         finally
         {
-            if (File.Exists(tempFile))
+            if (hProcess != IntPtr.Zero) CloseHandle(hProcess);
+        }
+    }
+
+    // New injection workflow: download/extract to ModInstallPath, launch Sky, inject TSM.dll
+    public async Task InjectLatestAsync(System.Threading.CancellationToken cancellationToken)
+    {
+        var config = _configService.GetConfig();
+        if (string.IsNullOrWhiteSpace(config.ModInstallPath))
+        {
+            throw new InvalidOperationException(_localizationService.GetString("Str.Error.ModPathNotSet"));
+        }
+
+        string installDir = config.ModInstallPath!;
+        Directory.CreateDirectory(installDir);
+
+        string tempZip = Path.Combine(Path.GetTempPath(), "TSM.zip");
+        string dllPath = Path.Combine(installDir, "TSM.dll");
+        try
+        {
+            bool needDownload = config.AlwaysDownloadLatestOnInject || !File.Exists(dllPath);
+            if (needDownload)
             {
-                File.Delete(tempFile);
+                // 1) Download latest TSM.zip
+                string url = config.GetDownloadUrl("TSM");
+                _updateInfoLabel(_localizationService.GetString("Str.Status.DownloadingTSM"));
+                var progress = new Progress<DownloadProgress>(p =>
+                {
+                    var speed = p.SpeedBytesPerSecond / 1024 / 1024;
+                    string fmt = _localizationService.GetString("Str.Status.DownloadingTSMProgress");
+                    _updateInfoLabel(string.Format(fmt, p.ProgressPercentage, speed));
+                });
+
+                bool ok = await _downloadService.DownloadFileAsync(url, tempZip, progress, cancellationToken);
+                if (!ok) throw new Exception(_localizationService.GetString("Str.Error.DownloadTSMFailed"));
+
+                // 2) Extract to chosen location (overwrite)
+                _updateInfoLabel(_localizationService.GetString("Str.Status.ExtractingTSM"));
+                System.IO.Compression.ZipFile.ExtractToDirectory(tempZip, installDir, true);
+            }
+            else
+            {
+                _updateInfoLabel(_localizationService.GetString("Str.Status.UsingLocalTSM"));
+            }
+
+            // 3) Launch game via Steam
+            _updateInfoLabel(_localizationService.GetString("Str.Status.LaunchingGame"));
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "steam://rungameid/2325290",
+                UseShellExecute = true
+            });
+
+            // 4) Wait for process window
+            _updateInfoLabel(_localizationService.GetString("Str.Status.WaitingForGame"));
+            var process = await WaitForProcessAsync("Sky", TimeSpan.FromMinutes(2), cancellationToken);
+            if (process == null) throw new Exception(_localizationService.GetString("Str.Error.GameDidNotStart"));
+
+            // 5) Inject TSM.dll
+            if (!File.Exists(dllPath)) throw new FileNotFoundException(_localizationService.GetString("Str.Error.TSMNotFound"), dllPath);
+
+            // Optional delay before injection
+            if (config.InjectDelayMs > 0)
+            {
+                string waitFmt = _localizationService.GetString("Str.Status.WaitingBeforeInjection");
+                _updateInfoLabel(string.Format(waitFmt, config.InjectDelayMs));
+                await Task.Delay(config.InjectDelayMs, cancellationToken);
+            }
+
+            _updateInfoLabel(_localizationService.GetString("Str.Status.InjectingTSM"));
+            if (!InjectDll(process.Id, dllPath))
+            {
+                throw new Exception(_localizationService.GetString("Str.Error.InjectionFailed"));
+            }
+
+            _showPopup(_localizationService.GetString("Str.Message.InstallSuccess"));
+        }
+        finally
+        {
+            if (File.Exists(tempZip))
+            {
+                try { File.Delete(tempZip); } catch { }
             }
         }
     }
@@ -156,12 +215,13 @@ public class InstallationService : IDisposable
             var progress = new Progress<DownloadProgress>(p =>
             {
                 var speed = p.SpeedBytesPerSecond / 1024 / 1024; // Convert to MB/s
-                _updateInfoLabel($"Downloading VC Redist: {p.ProgressPercentage:F1}% ({speed:F1} MB/s)");
+                string fmt = _localizationService.GetString("Str.Status.DownloadingVCRedistProgress");
+                _updateInfoLabel(string.Format(fmt, p.ProgressPercentage, speed));
             });
 
             if (!await _downloadService.DownloadFileAsync(vcRedistUrl, exePath, progress, cancellationToken))
             {
-                throw new Exception("Failed to download VC Redist");
+                throw new Exception(_localizationService.GetString("Str.Error.DownloadVCRedistFailed"));
             }
 
             _updateInfoLabel(_localizationService.GetString("Str.Message.InstallingVCRedist"));
@@ -205,23 +265,6 @@ public class InstallationService : IDisposable
             if (File.Exists(exePath))
             {
                 File.Delete(exePath);
-            }
-        }
-    }
-
-    private void RemoveExistingModFiles(string gameFolder)
-    {
-        string[] filesToRemove = {
-            Path.Combine(gameFolder, "mods", "TSM.dll"),
-            Path.Combine(gameFolder, "powrprof.dll")
-        };
-
-        foreach (string file in filesToRemove)
-        {
-            if (File.Exists(file))
-            {
-                _updateInfoLabel($"Removing {Path.GetFileName(file)}...");
-                File.Delete(file);
             }
         }
     }

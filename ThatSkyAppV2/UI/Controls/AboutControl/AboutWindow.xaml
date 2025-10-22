@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <UserControl x:Class="ThatSkyAppV2.AboutWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -119,14 +119,15 @@
                                             HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,3,0,0"/>
                 </Border>
 
-                <TextBlock Text="That Sky App"
+                <TextBlock Text="{DynamicResource Str.About.AppName}"
                          FontSize="18"
                          FontWeight="SemiBold"
                          Foreground="White"
                          HorizontalAlignment="Center"
                          Margin="0,6,0,0"/>
 
-                <TextBlock Text="Version 1.9.0"
+                <TextBlock x:Name="VersionText"
+                         Text=""
                          FontSize="11"
                          Foreground="#B0B0B0"
                          HorizontalAlignment="Center"
@@ -135,7 +136,7 @@
 
             <!-- Creator Info -->
             <TextBlock Grid.Row="1"
-                     Text="Created by XeTrinityz"
+                     Text="{DynamicResource Str.About.CreatedBy}"
                      FontSize="12"
                      Foreground="#FFB0B0B0"
                      HorizontalAlignment="Left"
@@ -144,8 +145,9 @@
             <!-- Links -->
             <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
                 <Button Style="{StaticResource LinkButtonStyle}"
-                        Tag="Discord Community"
+                        Tag="{DynamicResource Str.About.Discord}"
                         Click="OnDiscordClick">
+
                     <iconPacks:PackIconBootstrapIcons Kind="Discord"
                                                    Width="16" 
                                                    Height="16"
@@ -153,8 +155,9 @@
                 </Button>
 
                 <Button Style="{StaticResource LinkButtonStyle}"
-                        Tag="View on GitHub"
+                        Tag="{DynamicResource Str.About.ViewOnGitHub}"
                         Click="OnGitHubClick">
+
                     <iconPacks:PackIconMaterial Kind="Github"
                                              Width="16"
                                              Height="16"

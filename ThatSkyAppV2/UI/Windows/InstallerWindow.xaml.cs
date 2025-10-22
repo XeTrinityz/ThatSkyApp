@@ -7,20 +7,18 @@ using ThatSkyAppV2.Services;
 using ThatSkyAppV2.Models;
 using ThatSkyAppV2.Constants;
 using ThatSkyAppV2.Utils;
+using Microsoft.Win32;
 
 namespace ThatSkyAppV2.UI.Windows;
 
 public partial class InstallerWindow : MetroWindow
 {
-    // Will be initialized based on the configuration
-    private ModInstallInfo[] _modInstallations;
 
     private readonly HttpClient _httpClient;
     private readonly AboutWindow _aboutWindow;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private readonly InstallationService _installationService;
     private readonly UpdateService _updateService;
-    private readonly GameLocationService _gameLocationService;
     private readonly AutoUpdateService _autoUpdateService;
     private readonly ConfigurationService _configService;
     private readonly LocalizationService _localizationService;
@@ -35,24 +33,16 @@ public partial class InstallerWindow : MetroWindow
         _configService = new ConfigurationService();
         _localizationService = new LocalizationService(_configService);
 
-        _gameLocationService = new GameLocationService(_configService);
         _installationService = new InstallationService(_httpClient, _configService, _localizationService, ShowPopup, UpdateInfoLabel);
 
-        _updateService = new UpdateService(_httpClient, ShowPopup, UpdateInfoLabel);
+        _updateService = new UpdateService(_httpClient, ShowPopup, UpdateInfoLabel, _localizationService);
         _autoUpdateService = new AutoUpdateService(_httpClient, content => InfoLabel.Content = content, isLoading => ToggleLoading(isLoading));
 
-        // Initialize mod installations based on current config
-        UpdateModInstallations();
-
-        UpdateStatus(GetGameFolderFromRegistry(false));
         UpdateUIStrings();
         _ = CleanupAsync();
         _ = _autoUpdateService.CheckAndApplyUpdateAsync();
 
         _localizationService.LanguageChanged += UpdateUIStrings;
-        
-        // Listen for settings changes to update mod installations
-        _configService.SettingsChanged += UpdateModInstallations;
     }
 
 
@@ -60,7 +50,6 @@ public partial class InstallerWindow : MetroWindow
     {
         base.OnClosed(e);
         _localizationService.LanguageChanged -= UpdateUIStrings;
-        _configService.SettingsChanged -= UpdateModInstallations;
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
         _httpClient.Dispose();
@@ -100,43 +89,8 @@ public partial class InstallerWindow : MetroWindow
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            ShowPopup($"Cleanup failed: {ex.Message}");
+            ShowPopup(string.Format(_localizationService.GetString("Str.Message.CleanupFailed"), ex.Message));
         }
-    }
-
-    private void UpdateModInstallations()
-    {
-        var config = _configService.GetConfig();
-        string smlFilename = config.UseNewModLoader ? "TSML.zip" : "sml-pc.zip";
-        
-        _modInstallations = new ModInstallInfo[] {
-            new("TSM", "TSM.zip", true),
-            new("SML", smlFilename, false)
-        };
-    }
-
-    private bool IsComponentInstalled(string component)
-    {
-        string? gameFolder = GetGameFolderFromRegistry(false);
-        if (string.IsNullOrEmpty(gameFolder)) return false;
-
-        switch (component)
-        {
-            case "TSM":
-                return File.Exists(Path.Combine(gameFolder, "mods", "TSM.dll"));
-            case "SML":
-                return File.Exists(Path.Combine(gameFolder, "powrprof.dll"));
-            case "VCRedist":
-                return IsRuntimeInstalled(@"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64");
-            default:
-                return false;
-        }
-    }
-
-    private bool IsInstalled()
-    {
-        string? gameFolder = GetGameFolderFromRegistry(false);
-        return !string.IsNullOrEmpty(gameFolder) && File.Exists(Path.Combine(gameFolder, "mods", "TSM.dll"));
     }
 
     private void UpdateUIStrings()
@@ -149,8 +103,7 @@ public partial class InstallerWindow : MetroWindow
         }
 
         // Main buttons
-        InstallButtonText.Text = _localizationService.GetString(
-            IsInstalled() ? "Str.Button.Update" : "Str.Button.Install");
+        InstallButtonText.Text = _localizationService.GetString("Str.Button.Inject");
 
         if (FindTextBlock(CheckForUpdatesButton) is TextBlock checkUpdatesText)
             checkUpdatesText.Text = _localizationService.GetString("Str.Button.CheckForUpdates");
@@ -168,100 +121,16 @@ public partial class InstallerWindow : MetroWindow
             maintenanceText.Text = _localizationService.GetString("Str.Button.Maintenance");
 
         // Maintenance menu items
-        if (FindTextBlock(RepairButton) is TextBlock repairText)
-            repairText.Text = _localizationService.GetString("Str.Menu.RepairInstallation");
-
         if (FindTextBlock(InstallVCRedistButton) is TextBlock vcRedistText)
             vcRedistText.Text = _localizationService.GetString("Str.Menu.InstallVCRedist");
-
-        if (FindTextBlock(UninstallButton) is TextBlock uninstallText)
-            uninstallText.Text = _localizationService.GetString("Str.Menu.UninstallTSM");
 
         if (FindTextBlock(VerifyFilesButton) is TextBlock verifyFilesText)
             verifyFilesText.Text = _localizationService.GetString("Str.Menu.VerifyFiles");
 
-        // Status labels
-        UpdateStatusLabels();
     }
 
 
-    private void UpdateInstallButton(bool isInstalled)
-    {
-        InstallButtonText.Text = _localizationService.GetString(
-            isInstalled ? "Str.Button.Update" : "Str.Button.Install");
-    }
-
-    private void UpdateStatusLabel(Label label, bool isInstalled)
-    {
-        label.Content = _localizationService.GetString(
-            isInstalled ? "Str.Status.Installed" : "Str.Status.NotInstalled");
-        label.Foreground = isInstalled ? Brushes.Green : Brushes.Red;
-    }
-
-    private void UpdateStatusLabels()
-    {
-        // Status labels
-        var labels = new[] {
-        ("TSM", TSMStatusLabel),
-        ("SML", SMLStatusLabel),
-        ("VCRedist", VCRedistStatusLabel)
-    };
-
-        foreach (var (prefix, label) in labels)
-        {
-            UpdateStatusLabel(label, IsComponentInstalled(prefix));
-        }
-    }
-
-    private void UpdateStatus(string? gameFolder)
-    {
-        try
-        {
-            UpdateVCRedistStatus();
-            if (string.IsNullOrEmpty(gameFolder))
-            {
-                ShowPopup("Game folder not found. Please select it manually.");
-                UpdateInstallButton(false);
-                return;
-            }
-            UpdateModStatus(gameFolder);
-        }
-        catch (Exception ex)
-        {
-            ShowPopup($"Status update failed: {ex.Message}");
-            UpdateInstallButton(false);
-        }
-    }
-
-    private void UpdateVCRedistStatus()
-    {
-        string[] registryPaths = {
-            @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x86",
-            @"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"
-        };
-
-        bool isVCRedistInstalled = registryPaths.Any(IsRuntimeInstalled);
-        UpdateStatusLabel(VCRedistStatusLabel, isVCRedistInstalled);
-    }
-
-    private bool IsRuntimeInstalled(string registryPath)
-    {
-        using var key = Registry.LocalMachine.OpenSubKey(registryPath);
-        return key?.GetValue("Installed") is int installedValue && installedValue == 1;
-    }
-
-    private void UpdateModStatus(string gameFolder)
-    {
-        bool isTSMInstalled = File.Exists(Path.Combine(gameFolder, "mods", "TSM.dll"));
-        bool isSMLInstalled = File.Exists(Path.Combine(gameFolder, "powrprof.dll"));
-
-        UpdateStatusLabel(TSMStatusLabel, isTSMInstalled);
-        UpdateStatusLabel(SMLStatusLabel, isSMLInstalled);
-        UpdateInstallButton(isTSMInstalled);
-    }
-
-    private string? GetGameFolderFromRegistry(bool openFolderDialog) =>
-        _gameLocationService.GetGameFolderFromRegistry(openFolderDialog);
+    // GameLocationService is no longer used; install/verify flows do not require selecting the game path.
 
     private void UpdateInfoLabel(string text)
     {
@@ -270,22 +139,65 @@ public partial class InstallerWindow : MetroWindow
 
     private async void InstallButton_Click(object sender, RoutedEventArgs e)
     {
-        string? gameFolder = GetGameFolderFromRegistry(true);
-        Debug.WriteLine($"[InstallButton_Click] Selected game folder: {gameFolder ?? "(null)"}");
-        
-        if (string.IsNullOrEmpty(gameFolder)) 
+        // Prevent injection while the game is already running
+        try
         {
-            Debug.WriteLine("[InstallButton_Click] No game folder selected, aborting installation");
-            return;
+            bool gameRunning = false;
+            foreach (var p in Process.GetProcessesByName("Sky"))
+            {
+                try { if (!p.HasExited) { gameRunning = true; break; } }
+                catch { gameRunning = true; break; }
+            }
+
+            if (gameRunning)
+            {
+                ShowPopup(_localizationService.GetString("Str.Message.CloseGameBeforeInject"));
+                return;
+            }
+        }
+        catch { /* best-effort check; if it fails, continue */ }
+
+        // Ensure a ModInstallPath is configured
+        var config = _configService.GetConfig();
+        if (string.IsNullOrWhiteSpace(config.ModInstallPath))
+        {
+            var dialog = new OpenFolderDialog
+            {
+                Title = _localizationService.GetString("Str.Dialog.SelectBaseFolder"),
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                string basePath = dialog.FolderName;
+                string target = System.IO.Path.Combine(basePath, "That Sky Mod");
+                try
+                {
+                    if (!Directory.Exists(target)) Directory.CreateDirectory(target);
+                    _configService.UpdateConfig(c => c.ModInstallPath = target);
+                }
+                catch (Exception ex)
+                {
+                    ShowPopup(string.Format(_localizationService.GetString("Str.Error.FailedSetModPath"), ex.Message));
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
         }
 
         ToggleLoading(true);
         try
         {
-            Debug.WriteLine($"[InstallButton_Click] Starting installation to: {gameFolder}");
-            await _installationService.InstallModsAsync(gameFolder, _modInstallations);
-            Debug.WriteLine("[InstallButton_Click] Installation completed successfully");
-            UpdateStatus(gameFolder);
+            Debug.WriteLine("[InstallButton_Click] Starting injection workflow");
+            await _installationService.InjectLatestAsync(_cancellationTokenSource.Token);
+            Debug.WriteLine("[InstallButton_Click] Injection completed successfully");
+        }
+        catch (Exception ex)
+        {
+            ShowPopup(string.Format(_localizationService.GetString("Str.Message.InjectionFailed"), ex.Message));
         }
         finally
         {
@@ -294,42 +206,7 @@ public partial class InstallerWindow : MetroWindow
         }
     }
 
-    private async void UninstallButton_Click(object sender, RoutedEventArgs e)
-    {
-        MaintenanceMenu.IsOpen = false;
-
-        var dialog = new CustomDialog(
-            _localizationService.GetString("Str.Message.UninstallConfirm"),
-            _localizationService);
-
-        PopupContainer.Children.Add(dialog);
-        PopupContainer.Visibility = Visibility.Visible;
-
-        bool? result = await dialog.ShowAsync();
-
-        if (result == true)
-        {
-            string? gameFolder = GetGameFolderFromRegistry(true);
-            if (string.IsNullOrEmpty(gameFolder)) return;
-
-            ToggleLoading(true);
-            try
-            {
-                FileUtils.RemoveNonProtectedFiles(gameFolder);
-                ShowPopup(_localizationService.GetString("Str.Message.UninstallSuccess"));
-                UpdateStatus(gameFolder);
-            }
-            catch (Exception ex)
-            {
-                ShowPopup($"Uninstall failed: {ex.Message}");
-            }
-            finally
-            {
-                UpdateInfoLabel(string.Empty);
-                ToggleLoading(false);
-            }
-        }
-    }
+    // Uninstall functionality removed.
 
     private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
@@ -337,7 +214,6 @@ public partial class InstallerWindow : MetroWindow
         settingsWindow.Owner = this;
         settingsWindow.SettingsChanged += () => {
             _localizationService.UpdateResources();
-            UpdateStatus(GetGameFolderFromRegistry(false));
         };
         settingsWindow.ShowDialog();
     }
@@ -387,65 +263,7 @@ public partial class InstallerWindow : MetroWindow
         }
     }
 
-    private async void RepairButton_Click(object sender, RoutedEventArgs e)
-    {
-        MaintenanceMenu.IsOpen = false;
-        string? gameFolder = GetGameFolderFromRegistry(true);
-        if (string.IsNullOrEmpty(gameFolder)) return;
-
-        var dialog = new CustomDialog(
-            _localizationService.GetString("Would you like to verify game files through Steam first?"),
-            _localizationService);
-
-        PopupContainer.Children.Add(dialog);
-        PopupContainer.Visibility = Visibility.Visible;
-
-        bool? result = await dialog.ShowAsync();
-
-        if (result == true)
-        {
-            // Launch Steam verification
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "steam://validate/2325290",
-                UseShellExecute = true
-            });
-
-            // Show message about continuing after Steam verification
-            var continueDialog = new CustomDialog(
-                _localizationService.GetString("Please wait for Steam to finish verifying files, then click Yes to continue with TSM repair."),
-                _localizationService);
-
-            PopupContainer.Children.Add(continueDialog);
-            bool? shouldContinue = await continueDialog.ShowAsync();
-
-            if (shouldContinue != true) return;
-        }
-
-        ToggleLoading(true);
-        try
-        {
-            FileUtils.RemoveNonProtectedFiles(gameFolder);
-            await _installationService.InstallVCRedistAsync(_cancellationTokenSource.Token);
-            await _installationService.InstallModsAsync(gameFolder, _modInstallations);
-
-            ShowPopup("Repair completed successfully");
-            UpdateStatus(gameFolder);
-        }
-        catch (OperationCanceledException ex)
-        {
-            ShowPopup(ex.Message);
-        }
-        catch (Exception ex)
-        {
-            ShowPopup($"Repair failed: {ex.Message}");
-        }
-        finally
-        {
-            UpdateInfoLabel(string.Empty);
-            ToggleLoading(false);
-        }
-    }
+    // Repair functionality removed.
 
     private void VerifyFilesButton_Click(object sender, RoutedEventArgs e)
     {
@@ -463,7 +281,7 @@ public partial class InstallerWindow : MetroWindow
         }
         catch (Exception ex)
         {
-            ShowPopup($"Failed to start verification: {ex.Message}");
+            ShowPopup(string.Format(_localizationService.GetString("Str.Error.StartVerificationFailed"), ex.Message));
         }
     }
 
@@ -474,7 +292,6 @@ public partial class InstallerWindow : MetroWindow
         try
         {
             await _installationService.InstallVCRedistAsync(_cancellationTokenSource.Token);
-            UpdateVCRedistStatus();
         }
         catch (Exception ex)  
         {
@@ -492,10 +309,14 @@ public partial class InstallerWindow : MetroWindow
 
     private void OpenTSMFolder_Click(object sender, RoutedEventArgs e)
     {
-        string? gameFolder = GetGameFolderFromRegistry(true);
-        if (string.IsNullOrEmpty(gameFolder)) return;
+        var config = _configService.GetConfig();
+        if (string.IsNullOrWhiteSpace(config.ModInstallPath))
+        {
+            ShowPopup(_localizationService.GetString("Str.Message.PleaseSetModLocation"));
+            return;
+        }
 
-        string tsmFolder = Path.Combine(gameFolder, "mods", "TSM Resources");
+        string tsmFolder = Path.Combine(config.ModInstallPath!, "TSM Resources");
         Process.Start("explorer.exe", tsmFolder);
     }
 
@@ -548,7 +369,7 @@ public partial class InstallerWindow : MetroWindow
         }
         catch (Exception ex)
         {
-            ShowPopup($"Failed to open URL: {ex.Message}");
+            ShowPopup(string.Format(_localizationService.GetString("Str.Error.OpenUrlFailed"), ex.Message));
         }
     }
 }

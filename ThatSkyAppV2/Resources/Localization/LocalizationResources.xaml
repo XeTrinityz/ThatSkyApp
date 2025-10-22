@@ -14,6 +14,7 @@
     <system:String x:Key="Str.Button.LaunchSky">Launch Sky</system:String>
     <system:String x:Key="Str.Button.Maintenance">Maintenance</system:String>
     <system:String x:Key="Str.Button.Save">Save</system:String>
+    <system:String x:Key="Str.Button.Inject">Inject</system:String>
 
     <!-- Menu Items -->
     <system:String x:Key="Str.Menu.RepairInstallation">Repair Installation</system:String>
@@ -21,19 +22,10 @@
     <system:String x:Key="Str.Menu.UninstallTSM">Uninstall TSM</system:String>
     <system:String x:Key="Str.Menu.VerifyFiles">Verify Game Files</system:String>
 
-    <!-- Status Labels -->
-    <system:String x:Key="Str.Status.TSM">TSM:</system:String>
-    <system:String x:Key="Str.Status.SML">SML:</system:String>
-    <system:String x:Key="Str.Status.VCRedist">VC Redist:</system:String>
-    <system:String x:Key="Str.Status.Installed">Installed</system:String>
-    <system:String x:Key="Str.Status.NotInstalled">Not Installed</system:String>
-
     <!-- Messages -->
-    <system:String x:Key="Str.Message.UninstallConfirm">Uninstall TSM? All files except Sky-related content will be removed. This includes all your TSM Resources (Outfits, Local Accounts...).</system:String>
-    <system:String x:Key="Str.Message.GameFolderNotFound">Game folder not found. Please select it manually.</system:String>
     <system:String x:Key="Str.Message.UpdateAvailable">There is a new version of That Sky App available. Would you like to install it now?</system:String>
     <system:String x:Key="Str.Message.UpdateSuccess">TSM updated successfully</system:String>
-    <system:String x:Key="Str.Message.InstallSuccess">TSM installed successfully</system:String>
+    <system:String x:Key="Str.Message.InstallSuccess">TSM injected successfully</system:String>
     <system:String x:Key="Str.Message.UninstallSuccess">TSM uninstalled successfully</system:String>
     <system:String x:Key="Str.Message.DownloadingVCRedist">Downloading VC Redist...</system:String>
     <system:String x:Key="Str.Message.InstallingVCRedist">Installing VC Redist...</system:String>
@@ -48,6 +40,20 @@
     <system:String x:Key="Str.Message.VerifyFirst">Would you like to verify game files through Steam first?</system:String>
     <system:String x:Key="Str.Message.WaitForSteam">Please wait for Steam to finish verifying files, then click Yes to continue with TSM repair.</system:String>
     <system:String x:Key="Str.Message.VerificationStarted">Steam file verification started</system:String>
+    <system:String x:Key="Str.Message.CloseGameBeforeInject">Please close the game (Sky) before injecting, then try again.</system:String>
+    <system:String x:Key="Str.Message.CleanupFailed">Cleanup failed: {0}</system:String>
+    <system:String x:Key="Str.Message.InjectionFailed">Injection failed: {0}</system:String>
+    <system:String x:Key="Str.Message.PleaseSetModLocation">Please set a Mod Install Location in Settings first.</system:String>
+    <system:String x:Key="Str.Error.StartVerificationFailed">Failed to start verification: {0}</system:String>
+    <system:String x:Key="Str.Error.OpenUrlFailed">Failed to open URL: {0}</system:String>
+    <system:String x:Key="Str.Error.FailedSetModPath">Failed to set mod path: {0}</system:String>
+    <system:String x:Key="Str.Error.ModPathNotSet">Mod install path is not set. Please configure it in Settings.</system:String>
+    <system:String x:Key="Str.Error.GameDidNotStart">Sky.exe did not start within the expected time.</system:String>
+    <system:String x:Key="Str.Error.TSMNotFound">TSM.dll not found after extraction</system:String>
+    <system:String x:Key="Str.Error.InjectionFailed">Injection failed.</system:String>
+    <system:String x:Key="Str.Error.DownloadTSMFailed">Failed to download TSM.zip</system:String>
+    <system:String x:Key="Str.Error.DownloadVCRedistFailed">Failed to download VC Redist</system:String>
+    <system:String x:Key="Str.Error.CannotDetermineExePath">Cannot determine current executable path</system:String>
 
     <!-- Settings -->
     <system:String x:Key="Str.Settings.Title">Settings</system:String>
@@ -55,4 +61,46 @@
     <system:String x:Key="Str.Settings.Save">Save</system:String>
     <system:String x:Key="Str.Button.Yes">Yes</system:String>
     <system:String x:Key="Str.Button.No">No</system:String>
+    <system:String x:Key="Str.Language.English">English</system:String>
+    <system:String x:Key="Str.Language.Chinese">Chinese</system:String>
+    <system:String x:Key="Str.Language.Russian">Russian</system:String>
+
+    <!-- Settings: Mod Install -->
+    <system:String x:Key="Str.Settings.ModInstall.Header">Mod Install Location</system:String>
+    <system:String x:Key="Str.Settings.ModInstall.Browse">Browse</system:String>
+    <system:String x:Key="Str.Settings.ModInstall.NoPath">No mod path set</system:String>
+
+    <!-- Settings: Misc -->
+    <system:String x:Key="Str.Settings.Misc.Header">Miscellaneous</system:String>
+    <system:String x:Key="Str.Settings.Misc.DownloadLatest">Download latest on inject (recommended)</system:String>
+    <system:String x:Key="Str.Settings.Misc.InjectDelayMs">Inject Delay (ms)</system:String>
+
+    <!-- Dialogs -->
+    <system:String x:Key="Str.Dialog.SelectBaseFolder">Select a base folder for the mod installation</system:String>
+    <system:String x:Key="Str.Dialog.SelectSkyInstallFolder">Select mod installation folder</system:String>
+
+    <!-- Status (InstallationService) -->
+    <system:String x:Key="Str.Status.DownloadingTSM">Downloading TSM.zip...</system:String>
+    <system:String x:Key="Str.Status.DownloadingTSMProgress">Downloading TSM.zip: {0:F1}% ({1:F1} MB/s)</system:String>
+    <system:String x:Key="Str.Status.ExtractingTSM">Extracting TSM.zip...</system:String>
+    <system:String x:Key="Str.Status.UsingLocalTSM">Using local TSM files...</system:String>
+    <system:String x:Key="Str.Status.LaunchingGame">Launching game...</system:String>
+    <system:String x:Key="Str.Status.WaitingForGame">Waiting for game process...</system:String>
+    <system:String x:Key="Str.Status.InjectingTSM">Injecting TSM.dll...</system:String>
+    <system:String x:Key="Str.Status.WaitingBeforeInjection">Waiting {0} ms before injection...</system:String>
+    <system:String x:Key="Str.Status.DownloadingVCRedistProgress">Downloading VC Redist: {0:F1}% ({1:F1} MB/s)</system:String>
+
+    <!-- Update messages -->
+    <system:String x:Key="Str.Update.MessageWithUpdate">That Sky Mod V{0} | That Sky App: Update Available (V{1})</system:String>
+    <system:String x:Key="Str.Update.MessageNoUpdate">That Sky Mod V{0} | That Sky App V{1}</system:String>
+
+    <!-- Common -->
+    <system:String x:Key="Str.Common.ErrorTitle">Error</system:String>
+
+    <!-- About Window -->
+    <system:String x:Key="Str.About.AppName">That Sky App</system:String>
+    <system:String x:Key="Str.About.Version">Version {0}</system:String>
+    <system:String x:Key="Str.About.CreatedBy">Created by XeTrinityz</system:String>
+    <system:String x:Key="Str.About.Discord">Discord Community</system:String>
+    <system:String x:Key="Str.About.ViewOnGitHub">View on GitHub</system:String>
 </ResourceDictionary>

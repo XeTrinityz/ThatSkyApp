@@ -1,23 +1,24 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
+using ThatSkyAppV2.Constants;
 
 namespace ThatSkyAppV2
 {
     public partial class AboutWindow : UserControl
     {
-        private const string DiscordUrl = "https://discord.com/invite/z5Ub9a3QhU";
+        private const string DiscordUrl = "https://discord.com/invite/kjpGzTU9hH";
         private const string GitHubUrl = "https://github.com/XeTrinityz/ThatSkyApp";
-
-        public event EventHandler? CheckForUpdatesRequested;
 
         public AboutWindow()
         {
             InitializeComponent();
+            var fmt = Application.Current.Resources["Str.About.Version"] as string ?? "Version {0}";
+            VersionText.Text = string.Format(fmt, AppConstants.AppVersion);
         }
 
         // Original methods for backwards compatibility
@@ -41,12 +42,6 @@ namespace ThatSkyAppV2
             BeginAnimation(OpacityProperty, fadeOut);
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            OpenUrl(e.Uri.AbsoluteUri);
-            e.Handled = true;
-        }
-
         private static void OpenUrl(string url)
         {
             try
@@ -59,9 +54,11 @@ namespace ThatSkyAppV2
             }
             catch (Exception ex)
             {
+                string errFmt = Application.Current.Resources["Str.Error.OpenUrlFailed"] as string ?? "Failed to open URL: {0}";
+                string title = Application.Current.Resources["Str.Common.ErrorTitle"] as string ?? "Error";
                 MessageBox.Show(
-                    $"Failed to open URL: {ex.Message}",
-                    "Error",
+                    string.Format(errFmt, ex.Message),
+                    title,
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

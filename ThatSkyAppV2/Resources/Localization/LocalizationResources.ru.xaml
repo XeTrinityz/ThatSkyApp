@@ -1,11 +1,12 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!-- Window Title -->
-    <system:String x:Key="Str.Window.Title">То самое приложение Sky</system:String>
+    <system:String x:Key="Str.Window.Title">That Sky App</system:String>
 
     <!-- Button Labels -->
+    <system:String x:Key="Str.Button.Inject">Внедрить</system:String>
     <system:String x:Key="Str.Button.Install">Установить</system:String>
     <system:String x:Key="Str.Button.Update">Обновить</system:String>
     <system:String x:Key="Str.Button.CheckForUpdates">Проверить обновления</system:String>
@@ -48,11 +49,68 @@
     <system:String x:Key="Str.Message.VerifyFirst">Хотите сначала проверить файлы игры через Steam?</system:String>
     <system:String x:Key="Str.Message.WaitForSteam">Пожалуйста, дождитесь окончания проверки файлов в Steam, затем нажмите Да, чтобы продолжить ремонт TSM.</system:String>
     <system:String x:Key="Str.Message.VerificationStarted">Началась проверка файлов в Steam</system:String>
+    <system:String x:Key="Str.Message.CleanupFailed">Сбой очистки: {0}</system:String>
+    <system:String x:Key="Str.Message.CloseGameBeforeInject">Пожалуйста, закройте игру (Sky) перед инъекцией, затем попробуйте снова.</system:String>
+    <system:String x:Key="Str.Message.InjectionFailed">Инъекция не удалась: {0}</system:String>
+    <system:String x:Key="Str.Message.PleaseSetModLocation">Сначала укажите расположение установки мода в настройках.</system:String>
 
     <!-- Settings -->
     <system:String x:Key="Str.Settings.Title">Настройки</system:String>
     <system:String x:Key="Str.Settings.Language">Язык</system:String>
     <system:String x:Key="Str.Settings.Save">Сохранить</system:String>
+    <!-- Settings: Mod Install -->
+    <system:String x:Key="Str.Settings.ModInstall.Header">Путь установки мода</system:String>
+    <system:String x:Key="Str.Settings.ModInstall.Browse">Обзор</system:String>
+    <system:String x:Key="Str.Settings.ModInstall.NoPath">Путь для модов не задан</system:String>
+    <!-- Settings: Misc -->
+    <system:String x:Key="Str.Settings.Misc.Header">Разное</system:String>
+    <system:String x:Key="Str.Settings.Misc.DownloadLatest">Скачивать последнюю версию при инъекции (рекомендуется)</system:String>
+    <system:String x:Key="Str.Settings.Misc.InjectDelayMs">Задержка инъекции (мс)</system:String>
+
     <system:String x:Key="Str.Button.Yes">Да</system:String>
     <system:String x:Key="Str.Button.No">Нет</system:String>
+
+    <!-- Dialogs / Errors -->
+    <system:String x:Key="Str.Dialog.SelectBaseFolder">Выберите базовую папку для установки мода</system:String>
+    <system:String x:Key="Str.Dialog.SelectSkyInstallFolder">Выберите базовую папку для установки мода</system:String>
+    <system:String x:Key="Str.Error.FailedSetModPath">Не удалось установить путь модов: {0}</system:String>
+    <system:String x:Key="Str.Error.StartVerificationFailed">Не удалось запустить проверку: {0}</system:String>
+    <system:String x:Key="Str.Error.OpenUrlFailed">Не удалось открыть ссылку: {0}</system:String>
+    <system:String x:Key="Str.Error.ModPathNotSet">Путь установки модов не задан. Пожалуйста, укажите его в настройках.</system:String>
+    <system:String x:Key="Str.Error.GameDidNotStart">Sky.exe не запустилась в ожидаемое время.</system:String>
+    <system:String x:Key="Str.Error.TSMNotFound">TSM.dll не найден после распаковки</system:String>
+    <system:String x:Key="Str.Error.InjectionFailed">Инъекция не удалась.</system:String>
+    <system:String x:Key="Str.Error.DownloadTSMFailed">Не удалось загрузить TSM.zip</system:String>
+    <system:String x:Key="Str.Error.DownloadVCRedistFailed">Не удалось загрузить VC Redist</system:String>
+    <system:String x:Key="Str.Error.CannotDetermineExePath">Невозможно определить путь к текущему исполняемому файлу</system:String>
+
+    <!-- Language Names -->
+    <system:String x:Key="Str.Language.English">Английский</system:String>
+    <system:String x:Key="Str.Language.Chinese">Китайский</system:String>
+    <system:String x:Key="Str.Language.Russian">Русский</system:String>
+
+    <!-- Status (InstallationService) -->
+    <system:String x:Key="Str.Status.DownloadingTSM">Загрузка TSM.zip...</system:String>
+    <system:String x:Key="Str.Status.DownloadingTSMProgress">Загрузка TSM.zip: {0:F1}% ({1:F1} МБ/с)</system:String>
+    <system:String x:Key="Str.Status.ExtractingTSM">Распаковка TSM.zip...</system:String>
+    <system:String x:Key="Str.Status.UsingLocalTSM">Используются локальные файлы TSM...</system:String>
+    <system:String x:Key="Str.Status.LaunchingGame">Запуск игры...</system:String>
+    <system:String x:Key="Str.Status.WaitingForGame">Ожидание процесса игры...</system:String>
+    <system:String x:Key="Str.Status.InjectingTSM">Внедрение TSM.dll...</system:String>
+    <system:String x:Key="Str.Status.WaitingBeforeInjection">Ожидание {0} мс перед инъекцией...</system:String>
+    <system:String x:Key="Str.Status.DownloadingVCRedistProgress">Загрузка VC Redist: {0:F1}% ({1:F1} МБ/с)</system:String>
+
+    <!-- Update messages -->
+    <system:String x:Key="Str.Update.MessageWithUpdate">That Sky Mod V{0} | That Sky App: доступно обновление (V{1})</system:String>
+    <system:String x:Key="Str.Update.MessageNoUpdate">That Sky Mod V{0} | That Sky App V{1}</system:String>
+
+    <!-- Common -->
+    <system:String x:Key="Str.Common.ErrorTitle">Ошибка</system:String>
+
+    <!-- About Window -->
+    <system:String x:Key="Str.About.AppName">That Sky App</system:String>
+    <system:String x:Key="Str.About.Version">Версия {0}</system:String>
+    <system:String x:Key="Str.About.CreatedBy">Создано XeTrinityz</system:String>
+    <system:String x:Key="Str.About.Discord">Discord сообщество</system:String>
+    <system:String x:Key="Str.About.ViewOnGitHub">Посмотреть на GitHub</system:String>
 </ResourceDictionary>
