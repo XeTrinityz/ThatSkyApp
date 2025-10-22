@@ -134,10 +134,67 @@ public class InstallationService : IDisposable
 
         string tempZip = Path.Combine(Path.GetTempPath(), "TSM.zip");
         string dllPath = Path.Combine(installDir, "TSM.dll");
+        
         try
         {
-            bool needDownload = config.AlwaysDownloadLatestOnInject || !File.Exists(dllPath);
-            if (needDownload)
+            // Check if game is already running
+            Process? existingProcess = Process.GetProcessesByName("Sky").FirstOrDefault(p => {
+                try { return !p.HasExited; }
+                catch { return false; }
+            });
+
+            if (existingProcess != null)
+            {
+                // Game is already running, inject directly
+                _updateInfoLabel(_localizationService.GetString("Str.Status.GameAlreadyRunning"));
+                
+                // Ensure we have TSM.dll (download if needed)
+                bool needDownload = config.AlwaysDownloadLatestOnInject || !File.Exists(dllPath);
+                if (needDownload)
+                {
+                    string url = config.GetDownloadUrl("TSM");
+                    _updateInfoLabel(_localizationService.GetString("Str.Status.DownloadingTSM"));
+                    var progress = new Progress<DownloadProgress>(p =>
+                    {
+                        var speed = p.SpeedBytesPerSecond / 1024 / 1024;
+                        string fmt = _localizationService.GetString("Str.Status.DownloadingTSMProgress");
+                        _updateInfoLabel(string.Format(fmt, p.ProgressPercentage, speed));
+                    });
+
+                    bool ok = await _downloadService.DownloadFileAsync(url, tempZip, progress, cancellationToken);
+                    if (!ok) throw new Exception(_localizationService.GetString("Str.Error.DownloadTSMFailed"));
+
+                    _updateInfoLabel(_localizationService.GetString("Str.Status.ExtractingTSM"));
+                    System.IO.Compression.ZipFile.ExtractToDirectory(tempZip, installDir, true);
+                }
+                else
+                {
+                    _updateInfoLabel(_localizationService.GetString("Str.Status.UsingLocalTSM"));
+                }
+
+                if (!File.Exists(dllPath)) throw new FileNotFoundException(_localizationService.GetString("Str.Error.TSMNotFound"), dllPath);
+
+                // Optional delay before injection
+                if (config.InjectDelayMs > 0)
+                {
+                    string waitFmt = _localizationService.GetString("Str.Status.WaitingBeforeInjection");
+                    _updateInfoLabel(string.Format(waitFmt, config.InjectDelayMs));
+                    await Task.Delay(config.InjectDelayMs, cancellationToken);
+                }
+
+                _updateInfoLabel(_localizationService.GetString("Str.Status.InjectingTSM"));
+                if (!InjectDll(existingProcess.Id, dllPath))
+                {
+                    throw new Exception(_localizationService.GetString("Str.Error.InjectionFailed"));
+                }
+
+                _showPopup(_localizationService.GetString("Str.Message.InstallSuccess"));
+                return;
+            }
+
+            // Game is not running - proceed with download/extract
+            bool needDownload2 = config.AlwaysDownloadLatestOnInject || !File.Exists(dllPath);
+            if (needDownload2)
             {
                 // 1) Download latest TSM.zip
                 string url = config.GetDownloadUrl("TSM");
@@ -161,13 +218,16 @@ public class InstallationService : IDisposable
                 _updateInfoLabel(_localizationService.GetString("Str.Status.UsingLocalTSM"));
             }
 
-            // 3) Launch game via Steam
-            _updateInfoLabel(_localizationService.GetString("Str.Status.LaunchingGame"));
-            Process.Start(new ProcessStartInfo
+            // 3) Launch game via Steam (if AutoLaunchGame is enabled)
+            if (config.AutoLaunchGame)
             {
-                FileName = "steam://rungameid/2325290",
-                UseShellExecute = true
-            });
+                _updateInfoLabel(_localizationService.GetString("Str.Status.LaunchingGame"));
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "steam://rungameid/2325290",
+                    UseShellExecute = true
+                });
+            }
 
             // 4) Wait for process window
             _updateInfoLabel(_localizationService.GetString("Str.Status.WaitingForGame"));

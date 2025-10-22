@@ -65,6 +65,7 @@
     <!-- Settings: Misc -->
     <system:String x:Key="Str.Settings.Misc.Header">Разное</system:String>
     <system:String x:Key="Str.Settings.Misc.DownloadLatest">Скачивать последнюю версию при инъекции (рекомендуется)</system:String>
+    <system:String x:Key="Str.Settings.Misc.AutoLaunchGame">Автоматический запуск игры при инъекции</system:String>
     <system:String x:Key="Str.Settings.Misc.InjectDelayMs">Задержка инъекции (мс)</system:String>
 
     <system:String x:Key="Str.Button.Yes">Да</system:String>
@@ -90,6 +91,7 @@
     <system:String x:Key="Str.Language.Russian">Русский</system:String>
 
     <!-- Status (InstallationService) -->
+    <system:String x:Key="Str.Status.GameAlreadyRunning">Игра уже запущена, инъекция напрямую...</system:String>
     <system:String x:Key="Str.Status.DownloadingTSM">Загрузка TSM.zip...</system:String>
     <system:String x:Key="Str.Status.DownloadingTSMProgress">Загрузка TSM.zip: {0:F1}% ({1:F1} МБ/с)</system:String>
     <system:String x:Key="Str.Status.ExtractingTSM">Распаковка TSM.zip...</system:String>

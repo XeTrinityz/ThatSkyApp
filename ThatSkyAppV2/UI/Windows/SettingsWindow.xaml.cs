@@ -55,6 +55,9 @@ namespace ThatSkyAppV2.UI.Windows
             // Initialize download latest toggle
             DownloadLatestCheckBox.IsChecked = config.AlwaysDownloadLatestOnInject;
 
+            // Initialize auto-launch game toggle
+            AutoLaunchGameCheckBox.IsChecked = config.AutoLaunchGame;
+
             // Initialize inject delay (ms)
             InjectDelayTextBox.Text = Math.Max(0, config.InjectDelayMs).ToString();
         }
@@ -70,6 +73,7 @@ namespace ThatSkyAppV2.UI.Windows
                 config.Language = selectedLanguage;
                 config.ModInstallPath = string.IsNullOrWhiteSpace(_gamePath) ? null : _gamePath;
                 config.AlwaysDownloadLatestOnInject = DownloadLatestCheckBox.IsChecked == true;
+                config.AutoLaunchGame = AutoLaunchGameCheckBox.IsChecked == true;
 
                 // Persist inject delay (ms)
                 if (int.TryParse(InjectDelayTextBox.Text, out int delayMs) && delayMs >= 0)

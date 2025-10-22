@@ -139,24 +139,6 @@ public partial class InstallerWindow : MetroWindow
 
     private async void InstallButton_Click(object sender, RoutedEventArgs e)
     {
-        // Prevent injection while the game is already running
-        try
-        {
-            bool gameRunning = false;
-            foreach (var p in Process.GetProcessesByName("Sky"))
-            {
-                try { if (!p.HasExited) { gameRunning = true; break; } }
-                catch { gameRunning = true; break; }
-            }
-
-            if (gameRunning)
-            {
-                ShowPopup(_localizationService.GetString("Str.Message.CloseGameBeforeInject"));
-                return;
-            }
-        }
-        catch { /* best-effort check; if it fails, continue */ }
-
         // Ensure a ModInstallPath is configured
         var config = _configService.GetConfig();
         if (string.IsNullOrWhiteSpace(config.ModInstallPath))

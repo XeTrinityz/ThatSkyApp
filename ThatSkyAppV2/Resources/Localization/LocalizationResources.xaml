@@ -73,6 +73,7 @@
     <!-- Settings: Misc -->
     <system:String x:Key="Str.Settings.Misc.Header">Miscellaneous</system:String>
     <system:String x:Key="Str.Settings.Misc.DownloadLatest">Download latest on inject (recommended)</system:String>
+    <system:String x:Key="Str.Settings.Misc.AutoLaunchGame">Auto-launch game when injecting</system:String>
     <system:String x:Key="Str.Settings.Misc.InjectDelayMs">Inject Delay (ms)</system:String>
 
     <!-- Dialogs -->
@@ -80,6 +81,7 @@
     <system:String x:Key="Str.Dialog.SelectSkyInstallFolder">Select mod installation folder</system:String>
 
     <!-- Status (InstallationService) -->
+    <system:String x:Key="Str.Status.GameAlreadyRunning">Game is already running, injecting directly...</system:String>
     <system:String x:Key="Str.Status.DownloadingTSM">Downloading TSM.zip...</system:String>
     <system:String x:Key="Str.Status.DownloadingTSMProgress">Downloading TSM.zip: {0:F1}% ({1:F1} MB/s)</system:String>
     <system:String x:Key="Str.Status.ExtractingTSM">Extracting TSM.zip...</system:String>

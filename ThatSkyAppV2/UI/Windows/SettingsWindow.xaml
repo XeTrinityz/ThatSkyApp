@@ -376,7 +376,16 @@
  							  Grid.Row="1"
 							  Content="{DynamicResource Str.Settings.Misc.DownloadLatest}"
  							  Foreground="White"
- 							  VerticalAlignment="Center"/>
+ 							  VerticalAlignment="Center"
+							  Margin="0,0,0,10"/>
+
+					<!-- Auto-launch game toggle -->
+ 					<CheckBox x:Name="AutoLaunchGameCheckBox"
+ 							  Grid.Row="1"
+							  Content="{DynamicResource Str.Settings.Misc.AutoLaunchGame}"
+ 							  Foreground="White"
+ 							  VerticalAlignment="Bottom"
+							  Margin="0,30,0,0"/>
 
 					<!-- Inject Delay (ms) -->
 					<Grid Grid.Row="2" Margin="0,10,0,0">

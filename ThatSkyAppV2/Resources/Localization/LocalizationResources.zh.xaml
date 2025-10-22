@@ -65,6 +65,7 @@
     <!-- Settings: Misc -->
     <system:String x:Key="Str.Settings.Misc.Header">其他</system:String>
     <system:String x:Key="Str.Settings.Misc.DownloadLatest">注入时下载最新版本（推荐）</system:String>
+    <system:String x:Key="Str.Settings.Misc.AutoLaunchGame">注入时自动启动游戏</system:String>
     <system:String x:Key="Str.Settings.Misc.InjectDelayMs">注入延迟（毫秒）</system:String>
     <system:String x:Key="Str.Button.Yes">是</system:String>
     <system:String x:Key="Str.Button.No">否</system:String>
@@ -89,6 +90,7 @@
     <system:String x:Key="Str.Language.Russian">俄语</system:String>
 
     <!-- Status (InstallationService) -->
+    <system:String x:Key="Str.Status.GameAlreadyRunning">游戏已经在运行，直接注入...</system:String>
     <system:String x:Key="Str.Status.DownloadingTSM">正在下载 TSM.zip...</system:String>
     <system:String x:Key="Str.Status.DownloadingTSMProgress">正在下载 TSM.zip: {0:F1}% ({1:F1} MB/s)</system:String>
     <system:String x:Key="Str.Status.ExtractingTSM">正在解压 TSM.zip...</system:String>
