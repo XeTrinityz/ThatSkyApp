@@ -15,7 +15,7 @@
   </p>
 
   <!-- SOFTWARE IMAGE -->
-  <img src="https://i.ibb.co/7d0Fwxry/TSA.png" alt="That Sky App">
+  <img src="https://i.ibb.co/Kcn3ZW47/eZiaekVV.webp" alt="That Sky App">
 </div>
 
 <!-- CONTRIBUTING -->
