@@ -8,6 +8,7 @@ public class AppConfig
     public bool AlwaysDownloadLatestOnInject { get; set; } = true;
     public int InjectDelayMs { get; set; } = 0;
     public bool AutoLaunchGame { get; set; } = true;
+    public string InjectionMethod { get; set; } = "TSM.dll"; 
 
     // Hard-coded download URLs - can be accessed via GetDownloadUrl method
     private static readonly Dictionary<string, Dictionary<string, string>> DownloadUrls = new()

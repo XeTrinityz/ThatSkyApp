@@ -67,6 +67,12 @@
     <system:String x:Key="Str.Settings.Misc.DownloadLatest">注入时下载最新版本（推荐）</system:String>
     <system:String x:Key="Str.Settings.Misc.AutoLaunchGame">注入时自动启动游戏</system:String>
     <system:String x:Key="Str.Settings.Misc.InjectDelayMs">注入延迟（毫秒）</system:String>
+    
+    <!-- Settings: Injection Method -->
+    <system:String x:Key="Str.Settings.InjectionMethod.Header">注入方式</system:String>
+    <system:String x:Key="Str.Settings.InjectionMethod.Description">选择要使用的注入方式。如果一个不起作用，请尝试另一个。</system:String>
+    <system:String x:Key="Str.Settings.InjectionMethod.TSM">TSM.dll（挂钩现有 Vulkan 层）</system:String>
+    
     <system:String x:Key="Str.Button.Yes">是</system:String>
     <system:String x:Key="Str.Button.No">否</system:String>
 
@@ -79,6 +85,7 @@
     <system:String x:Key="Str.Error.ModPathNotSet">未设置模组安装路径。请在设置中进行配置。</system:String>
     <system:String x:Key="Str.Error.GameDidNotStart">Sky.exe 未在预期时间内启动。</system:String>
     <system:String x:Key="Str.Error.TSMNotFound">解压后未找到 TSM.dll</system:String>
+    <system:String x:Key="Str.Error.DLLNotFound">解压后未找到选定的 DLL</system:String>
     <system:String x:Key="Str.Error.InjectionFailed">注入失败。</system:String>
     <system:String x:Key="Str.Error.DownloadTSMFailed">下载 TSM.zip 失败</system:String>
     <system:String x:Key="Str.Error.DownloadVCRedistFailed">下载 VC Redist 失败</system:String>

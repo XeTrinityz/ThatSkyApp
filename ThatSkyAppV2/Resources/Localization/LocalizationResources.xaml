@@ -50,6 +50,7 @@
     <system:String x:Key="Str.Error.ModPathNotSet">Mod install path is not set. Please configure it in Settings.</system:String>
     <system:String x:Key="Str.Error.GameDidNotStart">Sky.exe did not start within the expected time.</system:String>
     <system:String x:Key="Str.Error.TSMNotFound">TSM.dll not found after extraction</system:String>
+    <system:String x:Key="Str.Error.DLLNotFound">Selected DLL not found after extraction</system:String>
     <system:String x:Key="Str.Error.InjectionFailed">Injection failed.</system:String>
     <system:String x:Key="Str.Error.DownloadTSMFailed">Failed to download TSM.zip</system:String>
     <system:String x:Key="Str.Error.DownloadVCRedistFailed">Failed to download VC Redist</system:String>
@@ -75,6 +76,11 @@
     <system:String x:Key="Str.Settings.Misc.DownloadLatest">Download latest on inject (recommended)</system:String>
     <system:String x:Key="Str.Settings.Misc.AutoLaunchGame">Auto-launch game when injecting</system:String>
     <system:String x:Key="Str.Settings.Misc.InjectDelayMs">Inject Delay (ms)</system:String>
+    
+    <!-- Settings: Injection Method -->
+    <system:String x:Key="Str.Settings.InjectionMethod.Header">Injection Method</system:String>
+    <system:String x:Key="Str.Settings.InjectionMethod.Description">Choose which injection method to use. If one doesn't work, try the other.</system:String>
+    <system:String x:Key="Str.Settings.InjectionMethod.TSM">TSM.dll (Hook existing Vulkan layer)</system:String>
 
     <!-- Dialogs -->
     <system:String x:Key="Str.Dialog.SelectBaseFolder">Select a base folder for the mod installation</system:String>

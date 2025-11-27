@@ -7,118 +7,189 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <!-- App Button Style -->
-        <Style x:Key="AppButtonStyle" TargetType="Button">
-            <Setter Property="BorderBrush" Value="#FF20A1C3"/>
+        <!-- Modern Dialog Button Style -->
+        <Style x:Key="DialogButtonStyle" TargetType="Button">
+            <Setter Property="BorderBrush" Value="#3000D9FF"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1">
-                            <ContentPresenter HorizontalAlignment="Center" 
-                                            VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF111111"/>
-                        <GradientStop Color="#FF1A2026" Offset="1"/>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1E293B" Offset="0"/>
+                        <GradientStop Color="#0F172A" Offset="1"/>
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FF0A0A0A"/>
-                                <GradientStop Color="#FF151B20" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="BorderBrush" Value="#FF1B8AA7"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="BorderBrush" Value="#FF25B6DE"/>
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1.5"
+                                CornerRadius="10"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                          To="#6000D9FF"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                          To="#3000D9FF"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="0.97"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="0.97"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="#80000000">
-        <Border BorderThickness="1" 
-                CornerRadius="5" 
-                BorderBrush="#FF20A1C3" 
-                Width="400" 
-                MinHeight="150"
+    <Grid Background="#D00F172A">
+        <Border BorderThickness="0" 
+                CornerRadius="20" 
+                Width="460" 
+                MinHeight="200"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center">
             <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF111111" />
-                    <GradientStop Color="#FF1A2026" Offset="1" />
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#0F172A" Offset="0"/>
+                    <GradientStop Color="#1E293B" Offset="0.5"/>
+                    <GradientStop Color="#0F172A" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
             <Border.Effect>
-                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Opacity="0.5" Color="#FF20A1C3"/>
+                <DropShadowEffect BlurRadius="40" ShadowDepth="0" Opacity="0.6" Color="#00D9FF"/>
             </Border.Effect>
-            <Grid Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            
+            <!-- Inner Border for Glassmorphism -->
+            <Border CornerRadius="20" 
+                    BorderThickness="1.5"
+                    Padding="32,28">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#60FFFFFF" Offset="0"/>
+                        <GradientStop Color="#2000D9FF" Offset="0.5"/>
+                        <GradientStop Color="#60FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <!-- Header with Icon and Message -->
-                <Grid Grid.Row="0" Margin="0,0,0,15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <iconPacks:PackIconMaterial Kind="AlertCircle"
-                                              Width="24" 
-                                              Height="24"
-                                              Foreground="#FFFFD700"
-                                              Margin="0,0,15,0"
-                                              VerticalAlignment="Top"/>
-                    <TextBlock x:Name="MessageText"
-                             Grid.Column="1"
-                             Text="Dialog Message"
-                             Foreground="White"
-                             TextWrapping="Wrap"
-                             VerticalAlignment="Center"/>
+                    <!-- Header with Icon and Message -->
+                    <Grid Grid.Row="0" Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Width="48"
+                                Height="48"
+                                Background="#2000D9FF"
+                                CornerRadius="14"
+                                VerticalAlignment="Top"
+                                Margin="0,0,16,0">
+                            <iconPacks:PackIconMaterial Kind="AlertCircle"
+                                                      Width="28" 
+                                                      Height="28"
+                                                      Foreground="#FFD700"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <TextBlock x:Name="MessageText"
+                                 Grid.Column="1"
+                                 Text="Dialog Message"
+                                 Foreground="White"
+                                 FontSize="15"
+                                 FontWeight="Medium"
+                                 TextWrapping="Wrap"
+                                 LineHeight="24"
+                                 VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- Buttons -->
+                    <UniformGrid Grid.Row="2" 
+                                Rows="1" 
+                                HorizontalAlignment="Right" 
+                                Margin="0,20,0,0">
+                        <Button x:Name="YesButton"
+                                Style="{StaticResource DialogButtonStyle}"
+                                Width="110"
+                                Margin="0,0,12,0"
+                                Click="YesButton_Click">
+                            <TextBlock Text="Yes" 
+                                     HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button x:Name="NoButton"
+                                Style="{StaticResource DialogButtonStyle}"
+                                Width="110"
+                                Click="NoButton_Click">
+                            <TextBlock Text="No" 
+                                     HorizontalAlignment="Center"/>
+                        </Button>
+                    </UniformGrid>
                 </Grid>
-
-                <!-- Buttons -->
-                <UniformGrid Grid.Row="2" 
-                            Rows="1" 
-                            HorizontalAlignment="Right" 
-                            Margin="0,15,0,0">
-                    <Button x:Name="YesButton"
-                            Style="{StaticResource AppButtonStyle}"
-                            Height="35"
-                            Width="100"
-                            Margin="0,0,10,0"
-                            Click="YesButton_Click">
-                        <TextBlock Text="Yes" 
-                                 HorizontalAlignment="Center"/>
-                    </Button>
-                    <Button x:Name="NoButton"
-                            Style="{StaticResource AppButtonStyle}"
-                            Height="35"
-                            Width="100"
-                            Click="NoButton_Click">
-                        <TextBlock Text="No" 
-                                 HorizontalAlignment="Center"/>
-                    </Button>
-                </UniformGrid>
-            </Grid>
+            </Border>
         </Border>
     </Grid>
 </UserControl>

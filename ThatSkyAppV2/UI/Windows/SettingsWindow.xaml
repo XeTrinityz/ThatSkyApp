@@ -4,62 +4,72 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="{DynamicResource Str.Settings.Title}"
-        Height="500"
-        Width="550"
+        MaxHeight="700"
+        Width="600"
         SizeToContent="Height"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize"
-		WindowTitleBrush="#FF1A2026"
+		WindowTitleBrush="#0F172A"
 		TitleCharacterCasing="Normal"
 		TitleAlignment="Center"
-		TitleBarHeight="30"
-		Background="#FF111111"
-		NonActiveBorderBrush="#FF1A2024"
-		BorderThickness="3"
-		BorderBrush="#FF1A2026"
-		NonActiveWindowTitleBrush="#FF1A2026">
+		TitleBarHeight="38"
+		Background="#0F172A"
+		NonActiveBorderBrush="#1E293B"
+		BorderThickness="0"
+		BorderBrush="#1E293B"
+		NonActiveWindowTitleBrush="#0F172A"
+		GlowBrush="#00D9FF">
+
+	<mah:MetroWindow.TitleTemplate>
+		<DataTemplate>
+			<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, Path=Title}"
+					   FontSize="18"
+					   FontWeight="SemiBold"
+					   Foreground="White"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+		</DataTemplate>
+	</mah:MetroWindow.TitleTemplate>
 
 	<mah:MetroWindow.Resources>
-		<!-- TextBox Style -->
-		<Style x:Key="SettingsTextBoxStyle" TargetType="TextBox">
-			<Setter Property="Background">
-				<Setter.Value>
-					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-						<GradientStop Color="#FF111111"/>
-						<GradientStop Color="#FF1A2026" Offset="1"/>
-					</LinearGradientBrush>
-				</Setter.Value>
-			</Setter>
+		<!-- Modern TextBox Style -->
+		<Style x:Key="SettingsTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+			<Setter Property="Background" Value="#0F172A"/>
 			<Setter Property="Foreground" Value="White"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
-			<Setter Property="Padding" Value="8,5"/>
+			<Setter Property="CaretBrush" Value="White"/>
+			<Setter Property="SelectionBrush" Value="#3000D9FF"/>
+			<Setter Property="BorderThickness" Value="1.5"/>
+			<Setter Property="BorderBrush" Value="#3000D9FF"/>
+			<Setter Property="Padding" Value="12,10"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="Height" Value="40"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
 			<Style.Triggers>
 				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+					<Setter Property="BorderBrush" Value="#5000D9FF"/>
 				</Trigger>
 				<Trigger Property="IsFocused" Value="True">
-					<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+					<Setter Property="BorderBrush" Value="#7000D9FF"/>
 				</Trigger>
 			</Style.Triggers>
 		</Style>
 
-		<!-- Combobox Style -->
+		<!-- Modern Combobox Style -->
 		<Style x:Key="SettingsComboBoxStyle" TargetType="ComboBox">
 			<Setter Property="Background">
 				<Setter.Value>
-					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-						<GradientStop Color="#FF111111"/>
-						<GradientStop Color="#FF1A2026" Offset="1"/>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+						<GradientStop Color="#1E293B" Offset="0"/>
+						<GradientStop Color="#0F172A" Offset="1"/>
 					</LinearGradientBrush>
 				</Setter.Value>
 			</Setter>
 			<Setter Property="Foreground" Value="White"/>
-			<Setter Property="Height" Value="26"/>
-			<Setter Property="Padding" Value="5,3,5,3"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+			<Setter Property="Height" Value="40"/>
+			<Setter Property="Padding" Value="12,8"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="BorderThickness" Value="1.5"/>
+			<Setter Property="BorderBrush" Value="#3000D9FF"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ComboBox">
@@ -75,21 +85,21 @@
 												Background="{TemplateBinding Background}"
 												BorderBrush="{TemplateBinding BorderBrush}"
 												BorderThickness="{TemplateBinding BorderThickness}"
-												CornerRadius="2">
+												CornerRadius="10">
 											<Grid>
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition/>
-													<ColumnDefinition Width="20"/>
+													<ColumnDefinition Width="32"/>
 												</Grid.ColumnDefinitions>
 												<ContentPresenter Grid.Column="0"
-																  Margin="8,0,0,0"
+																  Margin="12,0,0,0"
 																  VerticalAlignment="Center"
 																  Content="{Binding Path=SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
 																  ContentTemplate="{Binding Path=SelectionBoxItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
 												<Path Grid.Column="1"
-													  Fill="White"
+													  Fill="#00D9FF"
 													  Data="M0,0 L4,4 L8,0"
-													  Width="8" Height="4"
+													  Width="10" Height="6"
 													  Stretch="Fill"
 													  HorizontalAlignment="Center"
 													  VerticalAlignment="Center"/>
@@ -97,18 +107,10 @@
 										</Border>
 										<ControlTemplate.Triggers>
 											<Trigger Property="IsMouseOver" Value="True">
-												<Setter Property="BorderBrush" Value="#FF25B6DE"/>
+												<Setter Property="BorderBrush" Value="#5000D9FF"/>
 											</Trigger>
 											<Trigger Property="IsPressed" Value="True">
-												<Setter Property="Background">
-													<Setter.Value>
-														<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-															<GradientStop Color="#FF0A0A0A"/>
-															<GradientStop Color="#FF151B20" Offset="1"/>
-														</LinearGradientBrush>
-													</Setter.Value>
-												</Setter>
-												<Setter Property="BorderBrush" Value="#FF1B8AA7"/>
+												<Setter Property="BorderBrush" Value="#7000D9FF"/>
 											</Trigger>
 										</ControlTemplate.Triggers>
 									</ControlTemplate>
@@ -120,12 +122,16 @@
 								   Placement="Bottom"
 								   PopupAnimation="Slide">
 								<Border x:Name="DropDownBorder"
-										Background="#FF1A2026"
-										BorderThickness="1"
-										BorderBrush="#FF20A1C3"
-										Width="433"
-										CornerRadius="2">
-									<ScrollViewer MaxHeight="200">
+										Background="#1E293B"
+										BorderThickness="1.5"
+										BorderBrush="#3000D9FF"
+										MinWidth="500"
+										CornerRadius="10"
+										Margin="0,4,0,0">
+									<Border.Effect>
+										<DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.4" Color="#00D9FF"/>
+									</Border.Effect>
+									<ScrollViewer MaxHeight="240" Margin="4">
 										<ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
 									</ScrollViewer>
 								</Border>
@@ -136,39 +142,118 @@
 			</Setter>
 		</Style>
 
-		<!-- Settings Group Style -->
+		<!-- Modern ComboBoxItem Style -->
+		<Style TargetType="ComboBoxItem">
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="13"/>
+			<Setter Property="Padding" Value="12,10"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ComboBoxItem">
+						<Border x:Name="ItemBorder"
+								Background="{TemplateBinding Background}"
+								Padding="{TemplateBinding Padding}"
+								CornerRadius="6"
+								Margin="4,2">
+							<ContentPresenter/>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsHighlighted" Value="True">
+								<Setter TargetName="ItemBorder" Property="Background" Value="#2000D9FF"/>
+							</Trigger>
+							<Trigger Property="IsSelected" Value="True">
+								<Setter TargetName="ItemBorder" Property="Background" Value="#3000D9FF"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!-- Modern Settings Group Style -->
 		<Style x:Key="SettingsGroupStyle" TargetType="Border">
-			<Setter Property="Background" Value="#FF1A2026"/>
-			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="CornerRadius" Value="5"/>
-			<Setter Property="Padding" Value="15"/>
-			<Setter Property="Margin" Value="0,0,0,15"/>
+			<Setter Property="Background" Value="#1E293B"/>
+			<Setter Property="BorderBrush" Value="#3000D9FF"/>
+			<Setter Property="BorderThickness" Value="1.5"/>
+			<Setter Property="CornerRadius" Value="16"/>
+			<Setter Property="Padding" Value="20"/>
+			<Setter Property="Margin" Value="0,0,0,16"/>
 		</Style>
 
 		<!-- Settings Header Style -->
 		<Style x:Key="SettingsHeaderStyle" TargetType="TextBlock">
 			<Setter Property="Foreground" Value="White"/>
-			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="FontSize" Value="17"/>
 			<Setter Property="FontWeight" Value="SemiBold"/>
-			<Setter Property="Margin" Value="0,0,0,15"/>
+			<Setter Property="Margin" Value="0,0,0,16"/>
 		</Style>
 
 		<!-- Settings Label Style -->
 		<Style x:Key="SettingsLabelStyle" TargetType="TextBlock">
-			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="Foreground" Value="#E2E8F0"/>
 			<Setter Property="FontSize" Value="14"/>
 			<Setter Property="VerticalAlignment" Value="Center"/>
-			<Setter Property="Margin" Value="0,0,15,0"/>
+			<Setter Property="Margin" Value="0,0,16,0"/>
 		</Style>
 
-		<!-- Radio Button Style -->
+		<!-- Modern CheckBox Style -->
+		<Style TargetType="CheckBox">
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="CheckBox">
+						<Grid Background="Transparent">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+							</Grid.ColumnDefinitions>
+							<Border x:Name="CheckBoxBorder"
+									Width="22"
+									Height="22"
+									Background="Transparent"
+									BorderBrush="#3000D9FF"
+									BorderThickness="2"
+									CornerRadius="6"
+									Margin="0,0,10,0">
+								<iconPacks:PackIconMaterial x:Name="CheckMark"
+															Kind="Check"
+															Width="14"
+															Height="14"
+															Foreground="#00D9FF"
+															Visibility="Collapsed"
+															HorizontalAlignment="Center"
+															VerticalAlignment="Center"/>
+							</Border>
+							<ContentPresenter Grid.Column="1"
+											VerticalAlignment="Center"
+											RecognizesAccessKey="True"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+								<Setter TargetName="CheckBoxBorder" Property="Background" Value="#2000D9FF"/>
+								<Setter TargetName="CheckBoxBorder" Property="BorderBrush" Value="#00D9FF"/>
+							</Trigger>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="CheckBoxBorder" Property="BorderBrush" Value="#5000D9FF"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!-- Modern Radio Button Style -->
 		<Style x:Key="ModLoaderRadioButtonStyle" TargetType="{x:Type RadioButton}">
 			<Setter Property="SnapsToDevicePixels" Value="true"/>
 			<Setter Property="OverridesDefaultStyle" Value="true"/>
 			<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
 			<Setter Property="Foreground" Value="White"/>
 			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Cursor" Value="Hand"/>
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="{x:Type RadioButton}">
@@ -178,18 +263,19 @@
 									<ColumnDefinition Width="Auto"/>
 									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
-								<Ellipse x:Name="RadioCircle" Width="16" Height="16" Margin="0,2,5,0" StrokeThickness="1" Stroke="#FF20A1C3" Fill="Transparent"/>
-								<Ellipse x:Name="RadioMark" Width="8" Height="8" Margin="0,2,5,0" Fill="#FF20A1C3" Visibility="Collapsed"/>
+								<Ellipse x:Name="RadioCircle" Width="20" Height="20" Margin="0,2,8,0" StrokeThickness="2" Stroke="#3000D9FF" Fill="Transparent"/>
+								<Ellipse x:Name="RadioMark" Width="10" Height="10" Margin="0,2,8,0" Fill="#00D9FF" Visibility="Collapsed"/>
 								<ContentPresenter Grid.Column="1" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
 							</Grid>
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsChecked" Value="true">
 								<Setter TargetName="RadioMark" Property="Visibility" Value="Visible"/>
+								<Setter TargetName="RadioCircle" Property="Stroke" Value="#00D9FF"/>
 							</Trigger>
 							<Trigger Property="IsMouseOver" Value="true">
-								<Setter TargetName="RadioCircle" Property="Stroke" Value="#FF25B6DE"/>
-								<Setter TargetName="RadioMark" Property="Fill" Value="#FF25B6DE"/>
+								<Setter TargetName="RadioCircle" Property="Stroke" Value="#5000D9FF"/>
+								<Setter TargetName="RadioMark" Property="Fill" Value="#00D9FF"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -197,65 +283,107 @@
 			</Setter>
 		</Style>
 
-		<!-- Save Button Style -->
+		<!-- Modern Save Button Style -->
 		<Style x:Key="SaveButtonStyle" TargetType="Button">
-			<Setter Property="BorderBrush" Value="#FF20A1C3"/>
+			<Setter Property="BorderBrush" Value="#3000D9FF"/>
 			<Setter Property="Foreground" Value="White"/>
 			<Setter Property="FontSize" Value="15"/>
-			<Setter Property="Height" Value="40"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1">
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<iconPacks:PackIconMaterial Kind="ContentSave"
-                                                          Width="16" Height="16"
-                                                          Margin="15,0,10,0"
-                                                          VerticalAlignment="Center"/>
-								<ContentPresenter Grid.Column="1"
-                                                Margin="0,0,15,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"/>
-							</Grid>
-						</Border>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+			<Setter Property="Height" Value="50"/>
+			<Setter Property="Cursor" Value="Hand"/>
 			<Setter Property="Background">
 				<Setter.Value>
-					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-						<GradientStop Color="#FF111111"/>
-						<GradientStop Color="#FF1A2026" Offset="1"/>
+					<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+						<GradientStop Color="#1E293B" Offset="0"/>
+						<GradientStop Color="#0F172A" Offset="1"/>
 					</LinearGradientBrush>
 				</Setter.Value>
 			</Setter>
-			<Style.Triggers>
-				<Trigger Property="IsPressed" Value="True">
-					<Setter Property="Background">
-						<Setter.Value>
-							<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-								<GradientStop Color="#FF0A0A0A"/>
-								<GradientStop Color="#FF151B20" Offset="1"/>
-							</LinearGradientBrush>
-						</Setter.Value>
-					</Setter>
-					<Setter Property="BorderBrush" Value="#FF1B8AA7"/>
-				</Trigger>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="BorderBrush" Value="#FF25B6DE"/>
-				</Trigger>
-			</Style.Triggers>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Button}">
+						<Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1.5"
+                                CornerRadius="12"
+                                RenderTransformOrigin="0.5,0.5">
+							<Border.RenderTransform>
+								<ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+							</Border.RenderTransform>
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+								<iconPacks:PackIconMaterial Kind="ContentSave"
+                                                          Width="20" Height="20"
+                                                          Foreground="#00D9FF"
+                                                          Margin="0,0,12,0"
+                                                          VerticalAlignment="Center"/>
+								<ContentPresenter HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"/>
+							</StackPanel>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Trigger.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ColorAnimation Storyboard.TargetName="border" 
+														  Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+														  To="#6000D9FF"
+														  Duration="0:0:0.2"/>
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ColorAnimation Storyboard.TargetName="border" 
+														  Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+														  To="#3000D9FF"
+														  Duration="0:0:0.2"/>
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.ExitActions>
+							</Trigger>
+							<Trigger Property="IsPressed" Value="True">
+								<Trigger.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<DoubleAnimation Storyboard.TargetName="scaleTransform"
+														   Storyboard.TargetProperty="ScaleX"
+														   To="0.98"
+														   Duration="0:0:0.1"/>
+											<DoubleAnimation Storyboard.TargetName="scaleTransform"
+														   Storyboard.TargetProperty="ScaleY"
+														   To="0.98"
+														   Duration="0:0:0.1"/>
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<DoubleAnimation Storyboard.TargetName="scaleTransform"
+														   Storyboard.TargetProperty="ScaleX"
+														   To="1"
+														   Duration="0:0:0.1"/>
+											<DoubleAnimation Storyboard.TargetName="scaleTransform"
+														   Storyboard.TargetProperty="ScaleY"
+														   To="1"
+														   Duration="0:0:0.1"/>
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.ExitActions>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
 		</Style>
 	</mah:MetroWindow.Resources>
 
-	<Border Margin="15,10" Background="Transparent">
-  		<Grid>
+	<Border Margin="24,16" Background="Transparent" FocusManager.IsFocusScope="True">
+		<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+  			<Grid FocusManager.IsFocusScope="True">
   			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
@@ -266,7 +394,7 @@
   			</Grid.RowDefinitions>
 
 			<!-- Language Settings -->
-			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="0" Margin="0,0,0,10">
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="0" Focusable="True">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -274,15 +402,17 @@
 					</Grid.RowDefinitions>
 
 					<!-- Group Header -->
-					<StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-						<iconPacks:PackIconMaterial Kind="Translate"
-                                                      Width="20" Height="20"
-                                                      Foreground="#FF20A1C3"
-                                                      VerticalAlignment="Center"
-                                                      Margin="0,0,10,0"/>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+						<Border Width="32" Height="32" Background="#2000D9FF" CornerRadius="8" Margin="0,0,12,0">
+							<iconPacks:PackIconMaterial Kind="Translate"
+														  Width="18" Height="18"
+														  Foreground="#00D9FF"
+														  HorizontalAlignment="Center"
+														  VerticalAlignment="Center"/>
+						</Border>
 						<TextBlock Text="{DynamicResource Str.Settings.Language}"
                                  Foreground="White"
-                                 FontSize="14"
+                                 FontSize="16"
                                  FontWeight="SemiBold"
                                  VerticalAlignment="Center"/>
 					</StackPanel>
@@ -299,7 +429,7 @@
 			</Border>
 
 			<!-- Mod Install Location Settings -->
-			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="1" Margin="0,0,0,10">
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="1" Focusable="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -309,32 +439,34 @@
                     </Grid.RowDefinitions>
 
                     <!-- Group Header -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-                        <iconPacks:PackIconMaterial Kind="FolderCog"
-                                              Width="20" Height="20"
-                                              Foreground="#FF20A1C3"
-                                              VerticalAlignment="Center"
-                                              Margin="0,0,10,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16" Grid.Row="0">
+                        <Border Width="32" Height="32" Background="#2000D9FF" CornerRadius="8" Margin="0,0,12,0">
+							<iconPacks:PackIconMaterial Kind="FolderCog"
+														  Width="18" Height="18"
+														  Foreground="#00D9FF"
+														  HorizontalAlignment="Center"
+														  VerticalAlignment="Center"/>
+						</Border>
                         <TextBlock Text="{DynamicResource Str.Settings.ModInstall.Header}"
                              Foreground="White"
-                             FontSize="14"
+                             FontSize="16"
                              FontWeight="SemiBold"
                              VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <!-- Mod Path Display -->
                     <Border Grid.Row="1" 
-                            Background="#1A2026" 
-                            BorderBrush="#FF20A1C3" 
-                            BorderThickness="1" 
-                            CornerRadius="2"
-                            Padding="8,6"
-                            Margin="0,0,0,10">
+                            Background="#0F172A" 
+                            BorderBrush="#3000D9FF" 
+                            BorderThickness="1.5" 
+                            CornerRadius="10"
+                            Padding="12,10"
+                            Margin="0,0,0,12">
                         <TextBlock x:Name="GamePathTextBlock"
                                  Text="{DynamicResource Str.Settings.ModInstall.NoPath}"
                                  TextWrapping="Wrap"
-                                 Foreground="White"
-                                 FontSize="12"/>
+                                 Foreground="#94A3B8"
+                                 FontSize="13"/>
                     </Border>
 
                     <!-- Change Location Button -->
@@ -344,12 +476,12 @@
                             Click="BrowseGamePathButton_Click"
                             Style="{StaticResource SaveButtonStyle}"
                             HorizontalAlignment="Stretch"
-                            Margin="0,0,0,5"/>
+                            Margin="0,0,0,0"/>
                 </Grid>
             </Border>
 
-			<!-- Miscellaneous Settings -->
-			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="2" Margin="0,0,0,10">
+			<!-- Injection Method Settings -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="2" Focusable="True">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -358,37 +490,84 @@
 					</Grid.RowDefinitions>
 
 					<!-- Group Header -->
-					<StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-						<iconPacks:PackIconMaterial Kind="Tune"
-										  Width="20" Height="20"
-										  Foreground="#FF20A1C3"
-										  VerticalAlignment="Center"
-										  Margin="0,0,10,0"/>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,16" Grid.Row="0">
+						<Border Width="32" Height="32" Background="#2000D9FF" CornerRadius="8" Margin="0,0,12,0">
+							<iconPacks:PackIconMaterial Kind="Needle"
+														  Width="18" Height="18"
+														  Foreground="#00D9FF"
+														  HorizontalAlignment="Center"
+														  VerticalAlignment="Center"/>
+						</Border>
+						<TextBlock Text="{DynamicResource Str.Settings.InjectionMethod.Header}"
+								   Foreground="White"
+								   FontSize="16"
+								   FontWeight="SemiBold"
+								   VerticalAlignment="Center"/>
+					</StackPanel>
+
+					<!-- Description -->
+					<TextBlock Grid.Row="1" 
+							   Text="{DynamicResource Str.Settings.InjectionMethod.Description}"
+							   Foreground="#94A3B8"
+							   FontSize="13"
+							   TextWrapping="Wrap"
+							   Margin="0,0,0,16"/>
+
+					<!-- Radio Buttons -->
+					<StackPanel Grid.Row="2">
+                            <RadioButton x:Name="InjectionMethodTSMRadio"
+									 Content="{DynamicResource Str.Settings.InjectionMethod.TSM}"
+									 GroupName="InjectionMethod"
+									 Style="{StaticResource ModLoaderRadioButtonStyle}"
+									 Margin="0,0,0,12"
+									 IsChecked="True"/>
+                        </StackPanel>
+				</Grid>
+			</Border>
+
+			<!-- Miscellaneous Settings -->
+			<Border Style="{StaticResource SettingsGroupStyle}" Grid.Row="3" Focusable="True">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+
+					<!-- Group Header -->
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,16" Grid.Row="0">
+						<Border Width="32" Height="32" Background="#2000D9FF" CornerRadius="8" Margin="0,0,12,0">
+							<iconPacks:PackIconMaterial Kind="Tune"
+														  Width="18" Height="18"
+														  Foreground="#00D9FF"
+														  HorizontalAlignment="Center"
+														  VerticalAlignment="Center"/>
+						</Border>
 						<TextBlock Text="{DynamicResource Str.Settings.Misc.Header}"
  								   Foreground="White"
- 								   FontSize="14"
+ 								   FontSize="16"
  								   FontWeight="SemiBold"
  								   VerticalAlignment="Center"/>
 					</StackPanel>
 
-					<!-- Download latest on inject toggle -->
- 					<CheckBox x:Name="DownloadLatestCheckBox"
- 							  Grid.Row="1"
-							  Content="{DynamicResource Str.Settings.Misc.DownloadLatest}"
- 							  Foreground="White"
- 							  VerticalAlignment="Center"
-							  Margin="0,0,0,10"/>
+					<!-- Checkboxes -->
+					<StackPanel Grid.Row="1" Margin="0,0,0,12">
+						<!-- Download latest on inject toggle -->
+						<CheckBox x:Name="DownloadLatestCheckBox"
+								  Content="{DynamicResource Str.Settings.Misc.DownloadLatest}"
+								  Foreground="White"
+								  VerticalAlignment="Center"
+								  Margin="0,0,0,12"/>
 
-					<!-- Auto-launch game toggle -->
- 					<CheckBox x:Name="AutoLaunchGameCheckBox"
- 							  Grid.Row="1"
-							  Content="{DynamicResource Str.Settings.Misc.AutoLaunchGame}"
- 							  Foreground="White"
- 							  VerticalAlignment="Bottom"
-							  Margin="0,30,0,0"/>
+						<!-- Auto-launch game toggle -->
+						<CheckBox x:Name="AutoLaunchGameCheckBox"
+								  Content="{DynamicResource Str.Settings.Misc.AutoLaunchGame}"
+								  Foreground="White"
+								  VerticalAlignment="Center"/>
+					</StackPanel>
 
 					<!-- Inject Delay (ms) -->
-					<Grid Grid.Row="2" Margin="0,10,0,0">
+					<Grid Grid.Row="2" Margin="0,0,0,0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
 							<ColumnDefinition Width="*"/>
@@ -401,17 +580,19 @@
 								 Style="{StaticResource SettingsTextBoxStyle}"
 								 HorizontalAlignment="Stretch"
 								 MaxLength="7"
-								 Text="0"/>
+								 Text="0"
+								 PreviewKeyDown="InjectDelayTextBox_PreviewKeyDown"/>
 					</Grid>
 				</Grid>
 			</Border>
 
 			<!-- Save Button -->
-			<Button Grid.Row="3"
+			<Button Grid.Row="4"
                     Content="{DynamicResource Str.Settings.Save}"
                     Style="{StaticResource SaveButtonStyle}"
                     Click="SaveButton_Click"
-                    Margin="0,5,0,10"/>
-		</Grid>
+                    Margin="0,8,0,0"/>
+			</Grid>
+		</ScrollViewer>
 	</Border>
 </mah:MetroWindow>

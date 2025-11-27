@@ -67,6 +67,11 @@
     <system:String x:Key="Str.Settings.Misc.DownloadLatest">Скачивать последнюю версию при инъекции (рекомендуется)</system:String>
     <system:String x:Key="Str.Settings.Misc.AutoLaunchGame">Автоматический запуск игры при инъекции</system:String>
     <system:String x:Key="Str.Settings.Misc.InjectDelayMs">Задержка инъекции (мс)</system:String>
+    
+    <!-- Settings: Injection Method -->
+    <system:String x:Key="Str.Settings.InjectionMethod.Header">Метод инъекции</system:String>
+    <system:String x:Key="Str.Settings.InjectionMethod.Description">Выберите метод инъекции для использования. Если один не работает, попробуйте другой.</system:String>
+    <system:String x:Key="Str.Settings.InjectionMethod.TSM">TSM.dll (Перехват существующего слоя Vulkan)</system:String>
 
     <system:String x:Key="Str.Button.Yes">Да</system:String>
     <system:String x:Key="Str.Button.No">Нет</system:String>
@@ -80,6 +85,7 @@
     <system:String x:Key="Str.Error.ModPathNotSet">Путь установки модов не задан. Пожалуйста, укажите его в настройках.</system:String>
     <system:String x:Key="Str.Error.GameDidNotStart">Sky.exe не запустилась в ожидаемое время.</system:String>
     <system:String x:Key="Str.Error.TSMNotFound">TSM.dll не найден после распаковки</system:String>
+    <system:String x:Key="Str.Error.DLLNotFound">Выбранная DLL не найдена после распаковки</system:String>
     <system:String x:Key="Str.Error.InjectionFailed">Инъекция не удалась.</system:String>
     <system:String x:Key="Str.Error.DownloadTSMFailed">Не удалось загрузить TSM.zip</system:String>
     <system:String x:Key="Str.Error.DownloadVCRedistFailed">Не удалось загрузить VC Redist</system:String>

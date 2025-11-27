@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using ThatSkyAppV2.Constants;
@@ -67,11 +68,19 @@ namespace ThatSkyAppV2
         private void OnDiscordClick(object sender, RoutedEventArgs e)
         {
             OpenUrl(DiscordUrl);
+            e.Handled = true;
         }
 
         private void OnGitHubClick(object sender, RoutedEventArgs e)
         {
             OpenUrl(GitHubUrl);
+            e.Handled = true;
+        }
+
+        private void OnCloseClick(object sender, MouseButtonEventArgs e)
+        {
+            FadeOut();
+            e.Handled = true;
         }
     }
 }

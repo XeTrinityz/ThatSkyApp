@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using ThatSkyAppV2.Services;
@@ -60,6 +61,9 @@ namespace ThatSkyAppV2.UI.Windows
 
             // Initialize inject delay (ms)
             InjectDelayTextBox.Text = Math.Max(0, config.InjectDelayMs).ToString();
+
+            // Initialize injection method
+            InjectionMethodTSMRadio.IsChecked = true;
         }
 
         private string _gamePath = string.Empty;
@@ -113,6 +117,16 @@ namespace ThatSkyAppV2.UI.Windows
                 string selectedPath = dialog.FolderName;
                 // Accept any selected folder without validation
                 UpdateGamePath(selectedPath);
+            }
+        }
+
+        private void InjectDelayTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter || e.Key == Key.Escape)
+            {
+                // Move focus away from textbox
+                Keyboard.ClearFocus();
+                e.Handled = true;
             }
         }
     }

@@ -6,97 +6,172 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  Title="{DynamicResource Str.Window.Title}"
-                 Width="656"
-                 Height="291"
+                 Width="720"
+                 Height="375"
                  ResizeMode="NoResize"
                  ShowMinButton="False"
                  ShowMaxRestoreButton="False"
+                 WindowStartupLocation="CenterScreen"
                  mc:Ignorable="d"
-                 WindowTitleBrush="#FF1A2026"
+                 WindowTitleBrush="#0F172A"
                  TitleCharacterCasing="Normal"
                  TitleAlignment="Center"
-                 TitleBarHeight="30"
-                 Background="#FF111111"
-                 NonActiveBorderBrush="#FF1A2024"
-                 BorderThickness="3"
+                 TitleBarHeight="38"
+                 Background="#0F172A"
+                 NonActiveBorderBrush="#1E293B"
+                 BorderThickness="0"
                  VerticalContentAlignment="Center"
                  HorizontalContentAlignment="Center"
-                 BorderBrush="#FF1A2026"
-                 NonActiveWindowTitleBrush="#FF1A2026">
+                 BorderBrush="#1E293B"
+                 NonActiveWindowTitleBrush="#0F172A"
+                 GlowBrush="#00D9FF"
+                 UseNoneWindowStyle="False"
+                 NonActiveGlowBrush="#00D9FF">
+
+    <mah:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, Path=Title}"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+        </DataTemplate>
+    </mah:MetroWindow.TitleTemplate>
 
     <mah:MetroWindow.Resources>
-        <!-- Status Label Style -->
-        <Style x:Key="StatusLabelStyle" TargetType="Label">
-            <Setter Property="Background" Value="{x:Null}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="1,5,1,5"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-
-        <!-- App Button Style -->
+        <!-- Modern App Button Style with Animations -->
         <Style x:Key="AppButtonStyle" TargetType="Button">
-            <Setter Property="BorderBrush" Value="#FF20A1C3"/>
+            <Setter Property="BorderBrush" Value="#3000D9FF"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Height" Value="43"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="54"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background">
                 <Setter.Value>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF111111"/>
-                        <GradientStop Color="#FF1A2026" Offset="1"/>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#1E293B" Offset="0"/>
+                        <GradientStop Color="#0F172A" Offset="1"/>
                     </LinearGradientBrush>
                 </Setter.Value>
             </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1">
+                                BorderThickness="1.5"
+                                CornerRadius="12"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                          To="#6000D9FF"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                          To="#3000D9FF"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="0.98"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="0.98"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FF0A0A0A"/>
-                                <GradientStop Color="#FF151B20" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="BorderBrush" Value="#FF1B8AA7"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="BorderBrush" Value="#FF25B6DE"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <!-- Maintenance Menu Button Style -->
         <Style x:Key="MaintenanceMenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border" 
                                 Background="{TemplateBinding Background}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="12,0">
                             <ContentPresenter HorizontalAlignment="Left" 
                                             VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#30FFFFFF"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                          To="#2000D9FF"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                          To="Transparent"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#40FFFFFF"/>
+                                <Setter TargetName="border" Property="Background" Value="#3000D9FF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -108,8 +183,9 @@
         <Style x:Key="MahApps.Styles.Button.Circle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Width" Value="30"/>
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -117,16 +193,66 @@
                                 Background="{TemplateBinding Background}"
                                 CornerRadius="999"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#30FFFFFF"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                          To="#2000D9FF"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                          To="Transparent"
+                                                          Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#40FFFFFF"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="0.9"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="0.9"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -136,155 +262,119 @@
     </mah:MetroWindow.Resources>
 
     <Grid>
-        <Grid x:Name="MainContent" MouseDown="MainContent_MouseDown">
+        <Grid x:Name="MainContent" MouseDown="MainContent_MouseDown" Margin="24,12,24,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
             <Button x:Name="InstallButton" 
                 Style="{StaticResource AppButtonStyle}"
                 Click="InstallButton_Click"
-                Margin="15,9,15,5"
+                Margin="0,0,0,8"
                 Width="Auto">
-                <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Button}}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <iconPacks:PackIconMaterial Kind="Download" 
-                        Width="16" Height="16"
-                        HorizontalAlignment="Left"
+                        Width="20" Height="20"
+                        Foreground="#00D9FF"
                         VerticalAlignment="Center"
-                        Margin="20,0,0,0"
-                        Opacity="0"/>
+                        Margin="0,0,10,0"/>
                     <TextBlock x:Name="InstallButtonText" 
                         Text="{DynamicResource Str.Button.Inject}" 
-                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"/>
-                    <iconPacks:PackIconMaterial Kind="Download" 
-                        Width="16" Height="16"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Margin="0,0,20,0"/>
-                </Grid>
+                </StackPanel>
             </Button>
 
             <!-- Second Row Buttons -->
-            <UniformGrid Grid.Row="1" Rows="1" Margin="15,5">
+            <UniformGrid Grid.Row="1" Rows="1" Margin="0,8">
                 <Button x:Name="CheckForUpdatesButton"
                         Style="{StaticResource AppButtonStyle}"
                         Click="CheckForUpdatesButton_Click"
-                        Margin="0,0,5,0">
-                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Button}}">
+                        Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <iconPacks:PackIconBootstrapIcons Kind="ArrowClockwise" 
-                                                        Width="16" Height="16"
-                                                        HorizontalAlignment="Left"
+                                                        Width="20" Height="20"
+                                                        Foreground="#00D9FF"
                                                         VerticalAlignment="Center"
-                                                        Margin="20,0,0,0"
-                                                        Opacity="0"/>
+                                                        Margin="0,0,10,0"/>
                         <TextBlock Text="{DynamicResource Str.Button.CheckForUpdates}" 
-                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Center"/>
-                        <iconPacks:PackIconBootstrapIcons Kind="ArrowClockwise"
-                                                        Width="16" Height="16"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,20,0"/>
-                    </Grid>
+                    </StackPanel>
                 </Button>
 
                 <Button x:Name="ChangelogButton"
                         Style="{StaticResource AppButtonStyle}"
                         Click="ChangelogButton_Click"
-                        Margin="5,0,0,0">
-                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Button}}">
+                        Margin="8,0,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <iconPacks:PackIconRadixIcons Kind="ActivityLog" 
-                                                    Width="16" Height="16"
-                                                    HorizontalAlignment="Left"
+                                                    Width="20" Height="20"
+                                                    Foreground="#00D9FF"
                                                     VerticalAlignment="Center"
-                                                    Margin="20,0,0,0"
-                                                    Opacity="0"/>
+                                                    Margin="0,0,10,0"/>
                         <TextBlock Text="{DynamicResource Str.Button.Changelog}" 
-                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Center"/>
-                        <iconPacks:PackIconRadixIcons Kind="ActivityLog"
-                                                    Width="16" Height="16"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    Margin="0,0,20,0"/>
-                    </Grid>
+                    </StackPanel>
                 </Button>
             </UniformGrid>
 
             <!-- Third Row Buttons -->
-            <UniformGrid Grid.Row="2" Rows="1" Margin="15,5">
+            <UniformGrid Grid.Row="2" Rows="1" Margin="0,8">
                 <Button x:Name="OpenTSMFolder"
                         Style="{StaticResource AppButtonStyle}"
                         Click="OpenTSMFolder_Click"
-                        Margin="0,0,5,0">
-                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Button}}">
+                        Margin="0,0,8,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <iconPacks:PackIconMaterialDesign Kind="DriveFolderUpload" 
-                                                        Width="16" Height="16"
-                                                        HorizontalAlignment="Left"
+                                                        Width="20" Height="20"
+                                                        Foreground="#00D9FF"
                                                         VerticalAlignment="Center"
-                                                        Margin="20,0,0,0"
-                                                        Opacity="0"/>
+                                                        Margin="0,0,10,0"/>
                         <TextBlock Text="{DynamicResource Str.Button.TSMResources}" 
-                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Center"/>
-                        <iconPacks:PackIconMaterialDesign Kind="DriveFolderUpload"
-                                                        Width="16" Height="16"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,20,0"/>
-                    </Grid>
+                    </StackPanel>
                 </Button>
 
                 <Button x:Name="LaunchSky"
                         Style="{StaticResource AppButtonStyle}"
                         Click="LaunchSky_Click"
-                        Margin="5,0,0,0">
-                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Button}}">
+                        Margin="8,0,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <iconPacks:PackIconBootstrapIcons Kind="Steam" 
-                                                        Width="16" Height="16"
-                                                        HorizontalAlignment="Left"
+                                                        Width="20" Height="20"
+                                                        Foreground="#00D9FF"
                                                         VerticalAlignment="Center"
-                                                        Margin="20,0,0,0"
-                                                        Opacity="0"/>
+                                                        Margin="0,0,10,0"/>
                         <TextBlock Text="{DynamicResource Str.Button.LaunchSky}" 
-                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Center"/>
-                        <iconPacks:PackIconBootstrapIcons Kind="Steam"
-                                                        Width="16" Height="16"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,20,0"/>
-                    </Grid>
+                    </StackPanel>
                 </Button>
             </UniformGrid>
 
-            <!-- Maintenance Menu -->
-            <Grid Grid.Row="3" Margin="15,0,15,5">
+            <!-- Maintenance Menu and Action Buttons -->
+            <Grid Grid.Row="3">
                 <Button x:Name="MaintenanceButton"
                         Style="{StaticResource AppButtonStyle}"
                         Click="MaintenanceButton_Click"
-                        Width="Auto">
-                    <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Button}}">
+                        Width="Auto"
+                        VerticalAlignment="Top"
+                        Margin="0,8,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <iconPacks:PackIconMaterial Kind="ToolboxOutline" 
-                                                  Width="16" Height="16"
-                                                  HorizontalAlignment="Left"
+                                                  Width="20" Height="20"
+                                                  Foreground="#00D9FF"
                                                   VerticalAlignment="Center"
-                                                  Margin="20,0,0,0"
-                                                  Opacity="0"/>
+                                                  Margin="0,0,10,0"/>
                         <TextBlock Text="{DynamicResource Str.Button.Maintenance}" 
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center"/>
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,10,0"/>
                         <iconPacks:PackIconMaterial Kind="ChevronDown"
-                                                  Width="16" Height="16"
-                                                  HorizontalAlignment="Right"
-                                                  VerticalAlignment="Center"
-                                                  Margin="0,0,20,0"/>
-                    </Grid>
+                                                  Width="18" Height="18"
+                                                  Foreground="#94A3B8"
+                                                  VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Button>
 
                 <!-- Popup menu for maintenance options -->
@@ -293,102 +383,156 @@
                        Placement="Bottom"
                        AllowsTransparency="True"
                        StaysOpen="False">
-                    <Border Background="#FF1A2026" 
-                            BorderBrush="#FF20A1C3"
-                            BorderThickness="1"
-                            CornerRadius="5"
-                            Margin="0,5,0,0">
+                    <Border Background="#1E293B" 
+                            BorderBrush="#3000D9FF"
+                            BorderThickness="1.5"
+                            CornerRadius="12"
+                            Padding="8"
+                            Margin="0,8,0,0">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20" 
+                                            ShadowDepth="0" 
+                                            Opacity="0.4" 
+                                            Color="#00D9FF"/>
+                        </Border.Effect>
                         <StackPanel>
                             <Button x:Name="VerifyFilesButton"
                                 Style="{StaticResource MaintenanceMenuButtonStyle}"
                                 Click="VerifyFilesButton_Click">
-                                <Grid Width="200">
+                                <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="FileCheck"
-                                  Width="16" Height="16"
-                                  HorizontalAlignment="Left"
-                                  Margin="15,0,0,0"/>
+                                      Width="18" Height="18"
+                                      Foreground="#00D9FF"
+                                      Margin="0,0,12,0"
+                                      VerticalAlignment="Center"/>
                                     <TextBlock Text="Verify Game Files"
                                       Foreground="White"
-                                      HorizontalAlignment="Left"
-                                      Margin="45,0,0,0"/>
-                                </Grid>
+                                      FontSize="14"
+                                      VerticalAlignment="Center"/>
+                                </StackPanel>
                             </Button>
 
-                            <Separator Background="#30FFFFFF" Margin="10,0"/>
+                            <Separator Background="#2094A3B8" Margin="8,4"/>
 
                             <Button x:Name="InstallVCRedistButton"
                                     Style="{StaticResource MaintenanceMenuButtonStyle}"
                                     Click="InstallVCRedistButton_Click">
-                                <Grid Width="200">
+                                <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="MicrosoftVisualStudio"
-                                      Width="16" Height="16"
-                                      HorizontalAlignment="Left"
-                                      Margin="15,0,0,0"/>
+                                      Width="18" Height="18"
+                                      Foreground="#00D9FF"
+                                      Margin="0,0,12,0"
+                                      VerticalAlignment="Center"/>
                                     <TextBlock Text="Install VC Redist"
                                       Foreground="White"
-                                      HorizontalAlignment="Left"
-                                      Margin="45,0,0,0"/>
-                                </Grid>
+                                      FontSize="14"
+                                      VerticalAlignment="Center"/>
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                     </Border>
                 </Popup>
             </Grid>
-
-            <!-- Status Bar (labels removed, buttons retained) -->
-            <Grid Grid.Row="4" Background="#FF1A2026">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Orientation="Horizontal" Margin="5,0"/>
-
-                <Button x:Name="SettingsButton"
-        Grid.Column="1"
-        Click="SettingsButton_Click"
-        Width="30" Height="30"
-        Style="{StaticResource MahApps.Styles.Button.Circle}"
-        Background="Transparent"
-        BorderBrush="Transparent"
-        Margin="0,0,5,0">
-                    <iconPacks:PackIconMaterial Kind="Cog"
-                               Width="12" Height="12"/>
-                </Button>
-
-                <Button x:Name="AboutButton"
-        Grid.Column="2"
-        Click="AboutButton_Click"
-        Width="30" Height="30"
-        Style="{StaticResource MahApps.Styles.Button.Circle}"
-        Background="Transparent"
-        BorderBrush="Transparent">
-                    <iconPacks:PackIconMaterialDesign Kind="QuestionMark"
-                                    Width="12" Height="12"/>
-                </Button>
-            </Grid>
-
-            <!-- Popup Container -->
-            <Grid x:Name="PopupContainer" 
-                  Panel.ZIndex="1000" 
-                  Visibility="Hidden"
-                  Grid.RowSpan="5"/>
         </Grid>
+
+        <!-- Popup Container -->
+        <Grid x:Name="PopupContainer" 
+              Panel.ZIndex="1000" 
+              Visibility="Hidden"/>
+
+        <!-- Footer Info (Bottom-Left) -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Margin="12,0,0,12"
+                    Panel.ZIndex="100">
+            <TextBlock x:Name="AppVersionLabel"
+                       FontSize="11"
+                       Foreground="#64748B"
+                       VerticalAlignment="Center">
+                <Run Text="v"/>
+                <Run x:Name="VersionRun" Text="1.0.0"/>
+            </TextBlock>
+            <Border Width="4" Height="4"
+                    Background="#00D9FF"
+                    CornerRadius="2"
+                    Margin="10,0"
+                    VerticalAlignment="Center"/>
+            <TextBlock x:Name="StatusLabel"
+                       FontSize="11"
+                       Foreground="#64748B"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Settings and About Buttons (Bottom-Right Corner) -->
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Bottom" 
+                    Margin="0,0,12,12"
+                    Panel.ZIndex="100">
+            <Button x:Name="SettingsButton"
+                    Click="SettingsButton_Click"
+                    Style="{StaticResource MahApps.Styles.Button.Circle}"
+                    Background="#1E293B"
+                    BorderBrush="#3000D9FF"
+                    BorderThickness="1"
+                    Width="28"
+                    Height="28"
+                    Margin="0,0,6,0"
+                    ToolTip="Settings">
+                <iconPacks:PackIconMaterial x:Name="SettingsIcon"
+                                           Kind="Cog"
+                                           Width="14" Height="14"
+                                           Foreground="White"/>
+            </Button>
+
+            <Button x:Name="AboutButton"
+                    Click="AboutButton_Click"
+                    Style="{StaticResource MahApps.Styles.Button.Circle}"
+                    Background="#1E293B"
+                    BorderBrush="#3000D9FF"
+                    BorderThickness="1"
+                    Width="28"
+                    Height="28"
+                    ToolTip="About">
+                <iconPacks:PackIconMaterial x:Name="AboutIcon"
+                                           Kind="InformationOutline"
+                                           Width="14" Height="14"
+                                           Foreground="White"/>
+            </Button>
+        </StackPanel>
 
         <!-- Loading Overlay -->
         <Grid x:Name="LoadingRing" 
               Visibility="Hidden" 
-              Background="#80000000">
-            <StackPanel HorizontalAlignment="Center" 
-                       VerticalAlignment="Center">
-                <mah:ProgressRing Foreground="#FF20A1C3"/>
-                <Label x:Name="InfoLabel" 
-                       Content=""
-                       Foreground="White"
-                       HorizontalAlignment="Center"
-                       Margin="0,10,0,0"/>
-            </StackPanel>
+              Background="#C00F172A">
+            <Border Background="#1E293B"
+                    BorderBrush="#3000D9FF"
+                    BorderThickness="1.5"
+                    CornerRadius="16"
+                    Padding="32,24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="280">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" 
+                                    ShadowDepth="0" 
+                                    Opacity="0.5" 
+                                    Color="#00D9FF"/>
+                </Border.Effect>
+                <StackPanel HorizontalAlignment="Center">
+                    <mah:ProgressRing Foreground="#00D9FF"
+                                    Width="48"
+                                    Height="48"/>
+                    <Label x:Name="InfoLabel" 
+                           Content=""
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           HorizontalAlignment="Center"
+                           Margin="0,16,0,0"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </mah:MetroWindow>

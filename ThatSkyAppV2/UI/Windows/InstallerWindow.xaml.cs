@@ -36,13 +36,31 @@ public partial class InstallerWindow : MetroWindow
         _installationService = new InstallationService(_httpClient, _configService, _localizationService, ShowPopup, UpdateInfoLabel);
 
         _updateService = new UpdateService(_httpClient, ShowPopup, UpdateInfoLabel, _localizationService);
-        _autoUpdateService = new AutoUpdateService(_httpClient, content => InfoLabel.Content = content, isLoading => ToggleLoading(isLoading));
+        _autoUpdateService = new AutoUpdateService(_httpClient, content => UpdateInfoLabel(content), isLoading => ToggleLoading(isLoading));
 
         UpdateUIStrings();
         _ = CleanupAsync();
         _ = _autoUpdateService.CheckAndApplyUpdateAsync();
 
         _localizationService.LanguageChanged += UpdateUIStrings;
+        
+        // Set app version in footer
+        VersionRun.Text = AppConstants.AppVersion;
+        
+        // Initialize status label
+        StatusLabel.Text = "Ready";
+        
+        // Fix for glow rendering issue - force window to recalculate position/size
+        Loaded += async (s, e) => {
+            await Task.Delay(50);
+            var left = Left;
+            var top = Top;
+            Left = left + 1;
+            Top = top + 1;
+            await Task.Delay(10);
+            Left = left;
+            Top = top;
+        };
     }
 
 
@@ -135,6 +153,17 @@ public partial class InstallerWindow : MetroWindow
     private void UpdateInfoLabel(string text)
     {
         InfoLabel.Content = text;
+        
+        // Update footer status label
+        if (string.IsNullOrEmpty(text))
+        {
+            StatusLabel.Text = "Ready";
+        }
+        else
+        {
+            // Show a shortened version if too long
+            StatusLabel.Text = text.Length > 40 ? text.Substring(0, 37) + "..." : text;
+        }
     }
 
     private async void InstallButton_Click(object sender, RoutedEventArgs e)
@@ -202,7 +231,7 @@ public partial class InstallerWindow : MetroWindow
 
     private void MaintenanceButton_Click(object sender, RoutedEventArgs e)
     {
-        MaintenanceMenu.IsOpen = true;
+        MaintenanceMenu.IsOpen = !MaintenanceMenu.IsOpen;
     }
 
     protected override void OnDeactivated(EventArgs e)
@@ -326,9 +355,9 @@ public partial class InstallerWindow : MetroWindow
         var popup = new CustomPopup
         {
             Message = message,
-            HorizontalAlignment = HorizontalAlignment.Right,
+            HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Bottom,
-            Margin = new Thickness(0, 0, 10, 40)
+            Margin = new Thickness(0, 0, 0, 8)
         };
         _ = PopupContainer.Children.Add(popup);
     }
@@ -337,6 +366,10 @@ public partial class InstallerWindow : MetroWindow
     {
         LoadingRing.Visibility = isLoading ? Visibility.Visible : Visibility.Hidden;
         MainContent.IsEnabled = !isLoading;
+        SettingsButton.IsEnabled = !isLoading;
+        AboutButton.IsEnabled = !isLoading;
+        SettingsIcon.Opacity = isLoading ? 0.3 : 1.0;
+        AboutIcon.Opacity = isLoading ? 0.3 : 1.0;
     }
 
     private void OpenUrl(string url)

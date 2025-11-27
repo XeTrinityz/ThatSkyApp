@@ -133,7 +133,7 @@ public class InstallationService : IDisposable
         Directory.CreateDirectory(installDir);
 
         string tempZip = Path.Combine(Path.GetTempPath(), "TSM.zip");
-        string dllPath = Path.Combine(installDir, "TSM.dll");
+        string dllPath = Path.Combine(installDir, config.InjectionMethod);
         
         try
         {
@@ -148,7 +148,7 @@ public class InstallationService : IDisposable
                 // Game is already running, inject directly
                 _updateInfoLabel(_localizationService.GetString("Str.Status.GameAlreadyRunning"));
                 
-                // Ensure we have TSM.dll (download if needed)
+                // Ensure we have the selected DLL (download if needed)
                 bool needDownload = config.AlwaysDownloadLatestOnInject || !File.Exists(dllPath);
                 if (needDownload)
                 {
@@ -172,7 +172,7 @@ public class InstallationService : IDisposable
                     _updateInfoLabel(_localizationService.GetString("Str.Status.UsingLocalTSM"));
                 }
 
-                if (!File.Exists(dllPath)) throw new FileNotFoundException(_localizationService.GetString("Str.Error.TSMNotFound"), dllPath);
+                if (!File.Exists(dllPath)) throw new FileNotFoundException(_localizationService.GetString("Str.Error.DLLNotFound"), dllPath);
 
                 // Optional delay before injection
                 if (config.InjectDelayMs > 0)
@@ -234,8 +234,8 @@ public class InstallationService : IDisposable
             var process = await WaitForProcessAsync("Sky", TimeSpan.FromMinutes(2), cancellationToken);
             if (process == null) throw new Exception(_localizationService.GetString("Str.Error.GameDidNotStart"));
 
-            // 5) Inject TSM.dll
-            if (!File.Exists(dllPath)) throw new FileNotFoundException(_localizationService.GetString("Str.Error.TSMNotFound"), dllPath);
+            // 5) Inject selected DLL
+            if (!File.Exists(dllPath)) throw new FileNotFoundException(_localizationService.GetString("Str.Error.DLLNotFound"), dllPath);
 
             // Optional delay before injection
             if (config.InjectDelayMs > 0)

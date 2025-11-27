@@ -9,34 +9,42 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <!-- Colors -->
-        <Color x:Key="PrimaryAccent">#20A1C3</Color>
-        <Color x:Key="BackgroundStart">#111111</Color>
-        <Color x:Key="BackgroundEnd">#1A2026</Color>
+        <!-- Modern Colors -->
+        <Color x:Key="PrimaryAccent">#00D9FF</Color>
+        <Color x:Key="SecondaryAccent">#6366F1</Color>
+        <Color x:Key="BackgroundStart">#0F172A</Color>
+        <Color x:Key="BackgroundMid">#1E293B</Color>
+        <Color x:Key="BackgroundEnd">#0F172A</Color>
 
         <!-- Brushes -->
         <SolidColorBrush x:Key="PrimaryAccentBrush" Color="{StaticResource PrimaryAccent}"/>
-        <LinearGradientBrush x:Key="BackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="{StaticResource BackgroundStart}"/>
+        <LinearGradientBrush x:Key="ModernBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="{StaticResource BackgroundStart}" Offset="0"/>
+            <GradientStop Color="{StaticResource BackgroundMid}" Offset="0.5"/>
             <GradientStop Color="{StaticResource BackgroundEnd}" Offset="1"/>
         </LinearGradientBrush>
 
-        <!-- Link Button Style -->
+        <!-- Link Button Style with Animations -->
         <Style x:Key="LinkButtonStyle" TargetType="Button">
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="0,4"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="border" 
                                 Background="{TemplateBinding Background}" 
                                 BorderThickness="1"
-                                BorderBrush="Transparent"
-                                CornerRadius="4">
-                            <Grid Margin="8,0">
+                                BorderBrush="#20FFFFFF"
+                                CornerRadius="10"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <Grid Margin="12,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -46,30 +54,107 @@
                                 <ContentPresenter Grid.Column="0" 
                                                 x:Name="icon"
                                                 VerticalAlignment="Center"
-                                                Margin="0,0,8,0"/>
+                                                Margin="0,0,12,0"/>
 
                                 <TextBlock Grid.Column="1"
                                          x:Name="text"
                                          Text="{TemplateBinding Tag}"
                                          Foreground="White"
+                                         FontSize="13"
+                                         FontWeight="Medium"
                                          VerticalAlignment="Center"/>
 
                                 <iconPacks:PackIconMaterial Grid.Column="2"
+                                                         x:Name="arrow"
                                                          Kind="ArrowRight"
-                                                         Width="14"
-                                                         Height="14"
+                                                         Width="16"
+                                                         Height="16"
                                                          Foreground="{StaticResource PrimaryAccentBrush}"
                                                          VerticalAlignment="Center"
-                                                         Opacity="0.7"/>
+                                                         Opacity="0.8"
+                                                         RenderTransformOrigin="0.5,0.5">
+                                    <iconPacks:PackIconMaterial.RenderTransform>
+                                        <TranslateTransform x:Name="arrowTransform" X="0"/>
+                                    </iconPacks:PackIconMaterial.RenderTransform>
+                                </iconPacks:PackIconMaterial>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#30FFFFFF"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#20FFFFFF"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                          To="#25FFFFFF"
+                                                          Duration="0:0:0.2"/>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                          To="#40FFFFFF"
+                                                          Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetName="arrowTransform"
+                                                           Storyboard.TargetProperty="X"
+                                                           To="4"
+                                                           Duration="0:0:0.2">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                          To="Transparent"
+                                                          Duration="0:0:0.2"/>
+                                            <ColorAnimation Storyboard.TargetName="border" 
+                                                          Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                          To="#20FFFFFF"
+                                                          Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetName="arrowTransform"
+                                                           Storyboard.TargetProperty="X"
+                                                           To="0"
+                                                           Duration="0:0:0.2">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#40FFFFFF"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="0.98"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="0.98"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleX"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetName="scaleTransform"
+                                                           Storyboard.TargetProperty="ScaleY"
+                                                           To="1"
+                                                           Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -78,92 +163,118 @@
         </Style>
     </UserControl.Resources>
 
-    <Border BorderThickness="1" 
-            CornerRadius="5" 
-            BorderBrush="{StaticResource PrimaryAccentBrush}" 
-            Width="260" 
-            Height="199"
-            Background="{StaticResource BackgroundBrush}">
+    <!-- Outer container with rounded corners for proper clipping -->
+    <Border CornerRadius="20" 
+            Width="320" 
+            Height="300"
+            Background="Transparent"
+            RenderTransformOrigin="0.5,0.5">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="15" 
+            <DropShadowEffect BlurRadius="40" 
                             ShadowDepth="0" 
-                            Opacity="0.5" 
-                            Color="{StaticResource PrimaryAccent}"/>
+                            Opacity="0.6" 
+                            Color="#00D9FF"
+                            RenderingBias="Quality"/>
         </Border.Effect>
+        
+        <!-- Main content border -->
+        <Border CornerRadius="20" 
+                Background="{StaticResource ModernBackgroundBrush}"
+                BorderThickness="1"
+                Padding="20,16"
+                ClipToBounds="True"
+                MouseDown="OnCloseClick">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#60FFFFFF" Offset="0"/>
+                    <GradientStop Color="#2000D9FF" Offset="0.5"/>
+                    <GradientStop Color="#60FFFFFF" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <Grid Margin="15,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="33*"/>
-                <ColumnDefinition Width="5*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                <!-- App Logo and Title -->
+                <StackPanel Grid.Row="0" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,8,0,12">
 
-            <!-- App Logo and Title -->
-            <StackPanel Grid.Row="0" 
-                      HorizontalAlignment="Left" 
-                      Margin="60,0,0,4">
+                    <!-- Modern Icon Container -->
+                    <Border Width="56" 
+                            Height="56" 
+                            CornerRadius="16" 
+                            Margin="0,0,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#6366F1" Offset="0"/>
+                                <GradientStop Color="#00D9FF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20" 
+                                            ShadowDepth="0" 
+                                            Opacity="0.5" 
+                                            Color="#6366F1"/>
+                        </Border.Effect>
+                        <iconPacks:PackIconMaterial Kind="CloudUpload"
+                                                Width="28" 
+                                                Height="28"
+                                                Foreground="White"
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center"/>
+                    </Border>
 
-                <Border Width="36" 
-                        Height="36" 
-                        Background="#20FFFFFF"
-                        CornerRadius="8" Margin="0,3,0,0">
-                    <iconPacks:PackIconMaterial Kind="CloudUpload"
-                                            Width="20" 
-                                            Height="20"
-                                            Foreground="{StaticResource PrimaryAccentBrush}"
-                                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,3,0,0"/>
-                </Border>
+                    <TextBlock Text="{DynamicResource Str.About.AppName}"
+                             FontSize="22"
+                             FontWeight="Bold"
+                             Foreground="White"
+                             HorizontalAlignment="Center"
+                             Margin="0,12,0,0"/>
 
-                <TextBlock Text="{DynamicResource Str.About.AppName}"
-                         FontSize="18"
-                         FontWeight="SemiBold"
-                         Foreground="White"
+                    <TextBlock x:Name="VersionText"
+                             Text=""
+                             FontSize="12"
+                             FontWeight="Medium"
+                             Foreground="#94A3B8"
+                             HorizontalAlignment="Center"
+                             Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <!-- Creator Info -->
+                <TextBlock Grid.Row="1"
+                         Text="{DynamicResource Str.About.CreatedBy}"
+                         FontSize="13"
+                         FontWeight="Medium"
+                         Foreground="#CBD5E1"
                          HorizontalAlignment="Center"
-                         Margin="0,6,0,0"/>
+                         Margin="0,0,0,12"/>
 
-                <TextBlock x:Name="VersionText"
-                         Text=""
-                         FontSize="11"
-                         Foreground="#B0B0B0"
-                         HorizontalAlignment="Center"
-                         Margin="0,2,0,0"/>
-            </StackPanel>
+                <!-- Links -->
+                <StackPanel Grid.Row="2">
+                    <Button Style="{StaticResource LinkButtonStyle}"
+                            Tag="{DynamicResource Str.About.Discord}"
+                            Click="OnDiscordClick">
+                        <iconPacks:PackIconBootstrapIcons Kind="Discord"
+                                                       Width="18" 
+                                                       Height="18"
+                                                       Foreground="{StaticResource PrimaryAccentBrush}"/>
+                    </Button>
 
-            <!-- Creator Info -->
-            <TextBlock Grid.Row="1"
-                     Text="{DynamicResource Str.About.CreatedBy}"
-                     FontSize="12"
-                     Foreground="#FFB0B0B0"
-                     HorizontalAlignment="Left"
-                     Margin="58,0,0,4"/>
-
-            <!-- Links -->
-            <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
-                <Button Style="{StaticResource LinkButtonStyle}"
-                        Tag="{DynamicResource Str.About.Discord}"
-                        Click="OnDiscordClick">
-
-                    <iconPacks:PackIconBootstrapIcons Kind="Discord"
-                                                   Width="16" 
-                                                   Height="16"
-                                                   Foreground="{StaticResource PrimaryAccentBrush}"/>
-                </Button>
-
-                <Button Style="{StaticResource LinkButtonStyle}"
-                        Tag="{DynamicResource Str.About.ViewOnGitHub}"
-                        Click="OnGitHubClick">
-
-                    <iconPacks:PackIconMaterial Kind="Github"
-                                             Width="16"
-                                             Height="16"
-                                             Foreground="{StaticResource PrimaryAccentBrush}"/>
-                </Button>
-            </StackPanel>
-        </Grid>
+                    <Button Style="{StaticResource LinkButtonStyle}"
+                            Tag="{DynamicResource Str.About.ViewOnGitHub}"
+                            Click="OnGitHubClick">
+                        <iconPacks:PackIconMaterial Kind="Github"
+                                                 Width="18"
+                                                 Height="18"
+                                                 Foreground="{StaticResource PrimaryAccentBrush}"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Border>
 </UserControl>
