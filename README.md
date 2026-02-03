@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/XeTrinityz/TSM-Installer">
-    <img src="https://i.imgur.com/kAOyj2M.jpeg" alt="Logo" width="80" height="80">
+    <img src="https://i.ibb.co/Lh9mXCzP/TSM-Dark.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">That Sky App</h3>
@@ -15,7 +15,7 @@
   </p>
 
   <!-- SOFTWARE IMAGE -->
-  <img src="https://i.ibb.co/Kcn3ZW47/eZiaekVV.webp" alt="That Sky App">
+  <img src="https://i.ibb.co/Kzm6G0LJ/That-Sky-App.png" alt="That Sky App">
 </div>
 
 <!-- CONTRIBUTING -->
